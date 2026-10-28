@@ -190,14 +190,14 @@
               </select>
             </div>
 
-            <!-- Photo Upload -->
+            <!-- Photo Upload with Auto Compression -->
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-slate-300 mb-1">খেলোয়াড়ের ছবি আপলোড করুন <span class="text-red-400">*</span></label>
               <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-900 p-4 rounded-lg border border-slate-700">
                 <img id="photo-preview" src="https://via.placeholder.com/150/1e293b/94a3b8?text=Photo" alt="Preview" class="w-24 h-24 object-cover rounded-lg border border-slate-700 bg-slate-800">
                 <div class="space-y-2 text-center sm:text-left">
-                  <input type="file" id="p-photo" accept="image/*" required onchange="previewImage(event)" class="text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer">
-                  <p class="text-xs text-slate-500">যেকোনো সাইজ বা রেজোলিউশনের ছবি সিলেক্ট করা যাবে।</p>
+                  <input type="file" id="p-photo" accept="image/*" required onchange="previewAndCompressImage(event)" class="text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer">
+                  <p class="text-xs text-emerald-400 font-medium">যেকোনো সাইজ বা রেজোলিউশনের ছবি সিলেক্ট করা যাবে (অটো-কমপ্রেস হবে)।</p>
                 </div>
               </div>
             </div>
@@ -489,14 +489,33 @@
       document.getElementById(`tab-${tab}`).classList.remove('hidden');
     }
 
-    function previewImage(event) {
+    // Automatic Canvas Image Compression Logic (Shrinks high-res photos to ~30KB)
+    function previewAndCompressImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
       const reader = new FileReader();
-      reader.onload = function() {
-        document.getElementById('photo-preview').src = reader.result;
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Max dimensions for player ID photo
+          const maxWidth = 300;
+          const scale = maxWidth / img.width;
+          canvas.width = maxWidth;
+          canvas.height = img.height * scale;
+
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          
+          // Compress quality to 60% JPEG
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+          document.getElementById('photo-preview').src = compressedBase64;
+        };
+        img.src = e.target.result;
       };
-      if (event.target.files[0]) {
-        reader.readAsDataURL(event.target.files[0]);
-      }
+      reader.readAsDataURL(file);
     }
 
     function copyNum(id) {
@@ -508,43 +527,48 @@
     function handleFormSubmit(e) {
       e.preventDefault();
 
-      const photoSrc = document.getElementById('photo-preview').src;
-      const regId = 'ভিপিএল-২০২৬-' + Math.floor(1000 + Math.random() * 9000);
+      try {
+        const photoSrc = document.getElementById('photo-preview').src;
+        const regId = 'ভিপিএল-২০২৬-' + Math.floor(1000 + Math.random() * 9000);
 
-      const newPlayer = {
-        id: regId,
-        date: new Date().toLocaleDateString('bn-BD'),
-        fullname: document.getElementById('p-fullname').value,
-        jerseyname: document.getElementById('p-jerseyname').value,
-        guardian: document.getElementById('p-guardian').value,
-        mobile: document.getElementById('p-mobile').value,
-        whatsapp: document.getElementById('p-whatsapp').value,
-        nid: document.getElementById('p-nid').value || 'N/A',
-        address: document.getElementById('p-address').value,
-        prevteam: document.getElementById('p-prevteam').value,
-        role: document.getElementById('p-role').value,
-        batting: document.getElementById('p-batting').value,
-        bowling: document.getElementById('p-bowling').value,
-        jerseysize: document.getElementById('p-jerseysize').value,
-        senderphone: document.getElementById('p-senderphone').value,
-        trxid: document.getElementById('p-trxid').value,
-        photo: photoSrc,
-        status: 'পেন্ডিং'
-      };
+        const newPlayer = {
+          id: regId,
+          date: new Date().toLocaleDateString('bn-BD'),
+          fullname: document.getElementById('p-fullname').value,
+          jerseyname: document.getElementById('p-jerseyname').value,
+          guardian: document.getElementById('p-guardian').value,
+          mobile: document.getElementById('p-mobile').value,
+          whatsapp: document.getElementById('p-whatsapp').value,
+          nid: document.getElementById('p-nid').value || 'N/A',
+          address: document.getElementById('p-address').value,
+          prevteam: document.getElementById('p-prevteam').value,
+          role: document.getElementById('p-role').value,
+          batting: document.getElementById('p-batting').value,
+          bowling: document.getElementById('p-bowling').value,
+          jerseysize: document.getElementById('p-jerseysize').value,
+          senderphone: document.getElementById('p-senderphone').value,
+          trxid: document.getElementById('p-trxid').value,
+          photo: photoSrc,
+          status: 'পেন্ডিং'
+        };
 
-      localRegistrations.unshift(newPlayer);
-      localStorage.setItem('vpl_regs', JSON.stringify(localRegistrations));
+        localRegistrations.unshift(newPlayer);
+        localStorage.setItem('vpl_regs', JSON.stringify(localRegistrations));
 
-      alert(`অভিনন্দন! আপনার আবেদন সফলভাবে জমা হয়েছে।\nআপনার রেজিস্ট্রেশন আইডি: ${regId}`);
-      
-      document.getElementById('reg-form').reset();
-      document.getElementById('photo-preview').src = 'https://via.placeholder.com/150/1e293b/94a3b8?text=Photo';
-      
-      // Auto open status check
-      document.getElementById('search-mobile').value = newPlayer.mobile;
-      switchTab('status');
-      checkStatus();
-      renderAdminTable();
+        alert(`অভিনন্দন! আপনার আবেদন সফলভাবে জমা হয়েছে।\nআপনার রেজিস্ট্রেশন আইডি: ${regId}`);
+        
+        document.getElementById('reg-form').reset();
+        document.getElementById('photo-preview').src = 'https://via.placeholder.com/150/1e293b/94a3b8?text=Photo';
+        
+        // Auto open status check
+        document.getElementById('search-mobile').value = newPlayer.mobile;
+        switchTab('status');
+        checkStatus();
+        renderAdminTable();
+      } catch (err) {
+        alert('আবেদন জমা দিতে সমস্যা হয়েছে। অনুগ্রহ করে ছোট বা স্পষ্ট ছবি নির্বাচন করুন।');
+        console.error(err);
+      }
     }
 
     function checkStatus() {
