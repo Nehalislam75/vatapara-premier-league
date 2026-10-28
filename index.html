@@ -32,7 +32,7 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
 
-  <!-- Navigation Bar -->
+  <!-- Header / Navigation Bar -->
   <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-40 shadow-lg">
     <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-3">
@@ -50,7 +50,7 @@
     </div>
   </header>
 
-  <!-- Banner & Notice -->
+  <!-- Tournament Banner & Notice -->
   <div class="bg-gradient-to-r from-emerald-900 via-slate-800 to-emerald-950 border-b border-emerald-800/50 py-6 px-4">
     <div class="max-w-4xl mx-auto text-center space-y-3">
       <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider">ভাটাপাড়া প্রিমিয়ার লিগ ২০২৬</span>
@@ -80,7 +80,7 @@
   <!-- Main Container -->
   <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full">
 
-    <!-- Tab 1: Registration Form -->
+    <!-- TAB 1: Registration Form -->
     <div id="tab-register" class="space-y-6">
       <div class="bg-slate-800 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-xl">
         <div class="border-b border-slate-700 pb-4 mb-6">
@@ -190,14 +190,14 @@
               </select>
             </div>
 
-            <!-- Photo Upload (ANY SIZE ACCEPTED) -->
+            <!-- Photo Upload -->
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-slate-300 mb-1">খেলোয়াড়ের ছবি আপলোড করুন <span class="text-red-400">*</span></label>
               <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-900 p-4 rounded-lg border border-slate-700">
                 <img id="photo-preview" src="https://via.placeholder.com/150/1e293b/94a3b8?text=Photo" alt="Preview" class="w-24 h-24 object-cover rounded-lg border border-slate-700 bg-slate-800">
                 <div class="space-y-2 text-center sm:text-left">
                   <input type="file" id="p-photo" accept="image/*" required onchange="previewImage(event)" class="text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer">
-                  <p class="text-xs text-slate-500">যেকোনো সাইজ বা রেজোলিউশনের ছবি সিলেক্ট করা যাবে। ছবি স্পষ্ট হতে হবে।</p>
+                  <p class="text-xs text-slate-500">যেকোনো সাইজ বা রেজোলিউশনের ছবি সিলেক্ট করা যাবে।</p>
                 </div>
               </div>
             </div>
@@ -257,7 +257,7 @@
       </div>
     </div>
 
-    <!-- Tab 2: Status & Player ID Card -->
+    <!-- TAB 2: Status & Player ID Card -->
     <div id="tab-status" class="space-y-6 hidden">
       <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl max-w-xl mx-auto text-center space-y-4">
         <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-id-card text-emerald-400"></i> আপনার নিবন্ধনের স্ট্যাটাস ও আইডি কার্ড</h3>
@@ -325,7 +325,7 @@
       </div>
     </div>
 
-    <!-- Tab 3: Admin Dashboard -->
+    <!-- TAB 3: Admin Dashboard -->
     <div id="tab-admin" class="space-y-6 hidden">
       <!-- Passcode Login Box -->
       <div id="admin-login-box" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl max-w-md mx-auto text-center space-y-4">
@@ -451,9 +451,9 @@
     <p>© ২০২৬ ভাটাপাড়া প্রিমিয়ার লিগ (ভিপিএল)। সর্বস্বত্ব সংরক্ষিত।</p>
   </footer>
 
-  <!-- Inline App Scripts & Logic -->
+  <!-- App JavaScript Logic -->
   <script>
-    // Local Default Storage
+    // Local Default Storage Data
     let localRegistrations = JSON.parse(localStorage.getItem('vpl_regs') || '[]');
     let localConfig = JSON.parse(localStorage.getItem('vpl_config') || JSON.stringify({
       bkashNumber: '01700-000000',
@@ -462,7 +462,7 @@
       deadline: '১৫ মে, ২০২৬'
     }));
 
-    // Initialize UI
+    // Initialize UI on Load
     window.addEventListener('DOMContentLoaded', () => {
       applyConfigUI();
       renderAdminTable();
@@ -606,7 +606,7 @@
         return matchesSearch && matchesFilter;
       });
 
-      // Stats
+      // Stats Update
       document.getElementById('stat-total').innerText = localRegistrations.length;
       document.getElementById('stat-pending').innerText = localRegistrations.filter(p => p.status === 'পেন্ডিং').length;
       document.getElementById('stat-approved').innerText = localRegistrations.filter(p => p.status === 'অনুমোদিত').length;
@@ -642,10 +642,15 @@
             </span>
           </td>
           <td class="p-3 text-right">
-            ${p.status === 'পেন্ডিং' 
-              ? `<button onclick="approvePlayer('${p.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] px-2.5 py-1 rounded transition">অনুমোদন</button>`
-              : `<button onclick="rejectPlayer('${p.id}')" class="bg-slate-700 hover:bg-slate-600 text-slate-300 text-[11px] px-2.5 py-1 rounded transition">পেন্ডিং করুন</button>`
-            }
+            <div class="flex items-center justify-end gap-1.5">
+              ${p.status === 'পেন্ডিং' 
+                ? `<button onclick="approvePlayer('${p.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] px-2.5 py-1 rounded transition">অনুমোদন</button>`
+                : `<button onclick="rejectPlayer('${p.id}')" class="bg-slate-700 hover:bg-slate-600 text-slate-300 text-[11px] px-2.5 py-1 rounded transition">পেন্ডিং করুন</button>`
+              }
+              <button onclick="deletePlayer('${p.id}')" class="bg-rose-600/80 hover:bg-rose-600 text-white text-[11px] px-2 py-1 rounded transition flex items-center gap-1" title="মুছে ফেলুন">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
           </td>
         </tr>
       `).join('');
@@ -666,6 +671,16 @@
         localRegistrations[idx].status = 'পেন্ডিং';
         localStorage.setItem('vpl_regs', JSON.stringify(localRegistrations));
         renderAdminTable();
+      }
+    }
+
+    // Delete Player Functionality for Admin
+    function deletePlayer(id) {
+      if (confirm('আপনি কি নিশ্চিত যে এই আবেদনটি চিরতরে মুছে ফেলতে চান? (এই সিদ্ধান্ত আর ফেরত নেওয়া যাবে না)')) {
+        localRegistrations = localRegistrations.filter(p => p.id !== id);
+        localStorage.setItem('vpl_regs', JSON.stringify(localRegistrations));
+        renderAdminTable();
+        alert('আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।');
       }
     }
 
