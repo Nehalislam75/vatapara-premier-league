@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভাটাপাড়া প্রিমিয়ার লিগ (ভিপিএল) - অনলাইন প্লেয়ার রেজিস্ট্রেশন ও পেমেন্ট পোর্টাল</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bkash: '#E2136E',
+                        nagad: '#F7931E',
+                        vpl: {
+                            navy: '#0B132B',
+                            card: '#1C2541',
+                            green: '#059669',
+                            gold: '#F59E0B',
+                            crimson: '#DC2626'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Hind Siliguri', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #0b132b;
+            color: #f8fafc;
+        }
+        .glow-emerald {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+        }
+        .glow-amber {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #idCardPrintArea, #idCardPrintArea * {
+                visibility: visible;
+            }
+            #idCardPrintArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-3"></div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo & Brand -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('register')">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-amber-400 p-0.5 shadow-lg flex items-center justify-center">
+                    <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
+                        <i data-lucide="trophy" class="w-6 h-6 text-amber-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-2xl font-bold tracking-wide text-white flex items-center gap-2">
+                        ভাটাপাড়া প্রিমিয়ার লিগ <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono">ভিপিএল ২০২৬</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 font-medium">অফিশিয়াল খেলোয়াড় অনলাইন রেজিস্ট্রেশন</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="flex items-center gap-1.5 sm:gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800">
+                <button id="navBtnRegister" onclick="switchTab('register')" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 bg-emerald-600 text-white shadow-md">
+                    <i data-lucide="user-plus" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">প্লেয়ার</span> রেজিস্ট্রেশন
+                </button>
+                <button id="navBtnStatus" onclick="switchTab('status')" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200 flex items-center gap-1.5">
+                    <i data-lucide="search" class="w-4 h-4 text-amber-400"></i>
+                    <span>স্ট্যাটাস ও আইডি</span>
+                </button>
+                <button id="navBtnAdmin" onclick="switchTab('admin')" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200 flex items-center gap-1.5">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-teal-400"></i>
+                    <span>অ্যাডমিন</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= TAB 1: REGISTRATION FORM ================= -->
+        <div id="sectionRegister" class="space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border border-emerald-500/30 p-6 sm:p-10 shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-10 -top-10 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-8 space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                            <span>অনলাইন প্লেয়ার ড্রাফট ২০২৬</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                            ভাটাপাড়া প্রিমিয়ার লিগ (ভিপিএল) <br/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300">অফিশিয়াল অনলাইন রেজিস্ট্রেশন</span>
+                        </h2>
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                            ভাটাপাড়ার সবচেয়ে জমজমাট ক্রিকেট টুর্নামেন্টে অংশগ্রহণের জন্য নিচের ফর্মে সঠিক তথ্য প্রদান করুন। বিকাশ অথবা নগদ থেকে পেমেন্ট সম্পন্ন করে TrxID প্রদান করুন। আয়োজক কমিটি ভেরিফাই করার পর আপনার ডিজিটাল প্লেয়ার আইডি কার্ড ইস্যু করা হবে।
+                        </p>
+                        
+                        <!-- Dynamic Badges -->
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <div class="flex items-center gap-3 bg-slate-900/90 px-4 py-2.5 rounded-2xl border border-slate-800 shadow">
+                                <i data-lucide="banknote" class="w-5 h-5 text-emerald-400"></i>
+                                <div>
+                                    <p class="text-xs text-slate-400">রেজিস্ট্রেশন ফি</p>
+                                    <p class="text-base font-bold text-white"><span id="heroFeeDisplay">৳ ৫০০</span> <span class="text-xs text-slate-400 font-normal">/ জন</span></p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 bg-slate-900/90 px-4 py-2.5 rounded-2xl border border-slate-800 shadow">
+                                <i data-lucide="calendar" class="w-5 h-5 text-amber-400"></i>
+                                <div>
+                                    <p class="text-xs text-slate-400">নিবন্ধনের শেষ তারিখ</p>
+                                    <p class="text-sm font-bold text-white" id="heroLastDateDisplay">১৫ নভেম্বর, ২০২৬</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Instruction Card -->
+                    <div class="lg:col-span-4 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                            <h3 class="font-bold text-white flex items-center gap-2 text-sm">
+                                <i data-lucide="credit-card" class="w-4 h-4 text-emerald-400"></i>
+                                পেমেন্ট নির্দেশিকা (Send Money)
+                            </h3>
+                            <span id="paymentFeeBadge" class="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">৳ ৫০০</span>
+                        </div>
+
+                        <!-- bKash Box -->
+                        <div class="p-3 bg-bkash/10 border border-bkash/30 rounded-xl space-y-1">
+                            <div class="flex items-center justify-between text-xs font-bold text-pink-400">
+                                <span>বিকাশ নম্বর (Send Money):</span>
+                                <button onclick="copyBkashNumber()" class="hover:underline flex items-center gap-1 text-[11px]">
+                                    <i data-lucide="copy" class="w-3 h-3"></i> কপি
+                                </button>
+                            </div>
+                            <p id="bkashNumberDisplay" class="text-sm font-mono font-bold text-white">01700-000000</p>
+                        </div>
+
+                        <!-- Nagad Box -->
+                        <div class="p-3 bg-nagad/10 border border-nagad/30 rounded-xl space-y-1">
+                            <div class="flex items-center justify-between text-xs font-bold text-orange-400">
+                                <span>নগদ নম্বর (Send Money):</span>
+                                <button onclick="copyNagadNumber()" class="hover:underline flex items-center gap-1 text-[11px]">
+                                    <i data-lucide="copy" class="w-3 h-3"></i> কপি
+                                </button>
+                            </div>
+                            <p id="nagadNumberDisplay" class="text-sm font-mono font-bold text-white">01800-000000</p>
+                        </div>
+
+                        <p class="text-[11px] text-slate-400">
+                            * টাকা পাঠানোর পর বিকাশ/নগদের মেসেজ থেকে <strong class="text-amber-400">TrxID</strong> ফর্মে সঠিকভাবে প্রদান করুন।
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Main Form (8 Columns) -->
+                <div class="lg:col-span-8 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+                    <div class="flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">খেলোয়াড় তথ্য ফরম</h3>
+                            <p class="text-xs text-slate-400">সকল লাল তারকা চিহ্নিত (*) ফিল্ড পূরণ করা আবশ্যক</p>
+                        </div>
+                        <span class="text-xs font-semibold px-3 py-1 bg-slate-800 rounded-full text-slate-300 border border-slate-700">অনলাইন ফরম</span>
+                    </div>
+
+                    <form id="registrationForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                        
+                        <!-- Section 1: Personal Info -->
+                        <div class="space-y-4">
+                            <h4 class="text-xs font-bold text-emerald-400 tracking-wider uppercase flex items-center gap-1.5">
+                                <i data-lucide="user" class="w-4 h-4"></i> ১. ব্যক্তিগত পরিচিতি
+                            </h4>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">খেলোয়াড়ের পুরো নাম *</label>
+                                    <input type="text" id="playerName" required placeholder="উদাহরণ: মো: সাকিব আল হাসান" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">জার্সির নাম / ডাক নাম *</label>
+                                    <input type="text" id="jerseyName" required placeholder="উদাহরণ: SAKIB" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors uppercase">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">পিতা / অভিভাবকের নাম *</label>
+                                    <input type="text" id="fatherName" required placeholder="অভিভাবকের পুরো নাম" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">ঠিকানা / গ্রাম / পাড়া *</label>
+                                    <input type="text" id="playerAddress" required placeholder="উদাহরণ: ভাটাপাড়া উত্তর পাড়া" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">পূর্ববর্তী দলের নাম (Previous Team) *</label>
+                                    <input type="text" id="previousTeam" required placeholder="উদাহরণ: ভাটাপাড়া কিংস / নতুন খেলোয়াড়" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-400 mb-1">এনআইডি / জন্ম নিবন্ধন নম্বর (ঐচ্ছিক)</label>
+                                    <input type="text" id="playerNid" placeholder="১২৩ ৪৫৬ ৭৮৯০ (ঐচ্ছিক)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">মোবাইল নম্বর *</label>
+                                    <input type="tel" id="playerPhone" required placeholder="017XXXXXXXX" pattern="[0-9]{11}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">হোয়াটসঅ্যাপ নম্বর *</label>
+                                    <input type="tel" id="whatsappPhone" required placeholder="017XXXXXXXX" pattern="[0-9]{11}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Cricket Profile -->
+                        <div class="space-y-4 pt-4 border-t border-slate-800">
+                            <h4 class="text-xs font-bold text-emerald-400 tracking-wider uppercase flex items-center gap-1.5">
+                                <i data-lucide="target" class="w-4 h-4"></i> ২. ক্রিকেট স্কিল ও জার্সির বিবরণ
+                            </h4>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">খেলার রোল *</label>
+                                    <select id="playerRole" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                        <option value="অলরাউন্ডার">অলরাউন্ডার</option>
+                                        <option value="ব্যাটসম্যান">ব্যাটসম্যান</option>
+                                        <option value="বোলার">বোলার</option>
+                                        <option value="উইকেটরক্ষক-ব্যাটসম্যান">উইকেটরক্ষক-ব্যাটসম্যান</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">ব্যাটিং স্টাইল *</label>
+                                    <select id="battingStyle" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                        <option value="ডানহাতি ব্যাটসম্যান">ডানহাতি ব্যাটসম্যান</option>
+                                        <option value="বাঁহাতি ব্যাটসম্যান">বাঁহাতি ব্যাটসম্যান</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">বোলিং স্টাইল *</label>
+                                    <select id="bowlingStyle" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                        <option value="ডানহাতি পেস / ফাস্ট">ডানহাতি পেস / ফাস্ট</option>
+                                        <option value="ডানহাতি স্পিন">ডানহাতি স্পিন</option>
+                                        <option value="বাঁহাতি পেস / ফাস্ট">বাঁহাতি পেস / ফাস্ট</option>
+                                        <option value="বাঁহাতি স্পিন">বাঁহাতি স্পিন</option>
+                                        <option value="বোলিং করি না">বোলিং করি না</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">জার্সির সাইজ *</label>
+                                    <select id="shirtSize" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                        <option value="M">Medium (M)</option>
+                                        <option value="L">Large (L)</option>
+                                        <option value="XL">Extra Large (XL)</option>
+                                        <option value="XXL">Double Extra Large (XXL)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Payment Verification Info -->
+                        <div class="space-y-4 pt-4 border-t border-slate-800">
+                            <h4 class="text-xs font-bold text-emerald-400 tracking-wider uppercase flex items-center gap-1.5">
+                                <i data-lucide="receipt" class="w-4 h-4"></i> ৩. পেমেন্ট ট্রানজেকশন তথ্য (<span id="formFeeDisplay">৳ ৫০০</span>)
+                            </h4>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">পেমেন্ট মেথড *</label>
+                                    <select id="paymentMethod" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                        <option value="bKash">বিকাশ (bKash)</option>
+                                        <option value="Nagad">নগদ (Nagad)</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">টাকা পাঠানোর নম্বর *</label>
+                                    <input type="tel" id="senderPhone" required placeholder="017XXXXXXXX" pattern="[0-9]{11}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">ট্রানজেকশন আইডি (TrxID) *</label>
+                                    <input type="text" id="trxId" required placeholder="উদাহরণ: 9J3K8L2P0" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white uppercase font-mono focus:outline-none focus:border-emerald-500 transition-colors">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Submit Button -->
+                        <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <p class="text-xs text-slate-400">
+                                সাবমিট করার পর তথ্যগুলো আয়োজক কমিটি কর্তৃক যাচাই করা হবে।
+                            </p>
+                            <button type="submit" id="btnSubmitForm" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm rounded-xl shadow-lg hover:shadow-emerald-500/25 transition-all duration-200 flex items-center justify-center gap-2">
+                                <span>রেজিস্ট্রেশন সাবমিট করুন</span>
+                                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right Column: Photo Upload Preview (4 Columns) -->
+                <div class="lg:col-span-4 space-y-6">
+                    
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl text-center space-y-4 sticky top-24">
+                        <h3 class="text-sm font-bold text-white flex items-center justify-center gap-2">
+                            <i data-lucide="camera" class="w-4 h-4 text-emerald-400"></i>
+                            খেলোয়াড়ের ছবি আপলোড *
+                        </h3>
+                        
+                        <div class="relative w-40 h-44 mx-auto rounded-2xl overflow-hidden border-2 border-emerald-500/50 bg-slate-950 flex items-center justify-center group shadow-inner">
+                            <img id="photoPreview" src="https://placehold.co/300x300/1e293b/94a3b8?text=Player+Photo" class="w-full h-full object-cover" alt="Preview">
+                            <label for="photoInput" class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center cursor-pointer text-xs text-white">
+                                <i data-lucide="upload-cloud" class="w-6 h-6 mb-1 text-emerald-400"></i>
+                                ছবি পরিবর্তন করুন
+                            </label>
+                            <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="previewAndCompressImage(event)">
+                        </div>
+
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            পরিষ্কার পাসপোর্ট সাইজের ছবি নির্বাচন করুন। মোবাইল দিয়ে তোলা ছবিও গ্রহণযোগ্য।
+                        </p>
+
+                        <label for="photoInput" class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 cursor-pointer transition-colors w-full justify-center">
+                            <i data-lucide="image" class="w-4 h-4 text-emerald-400"></i>
+                            ছবি ফাইল নির্বাচন করুন
+                        </label>
+
+                        <!-- DB Connection Status Pill -->
+                        <div class="pt-2 border-t border-slate-800/80 flex items-center justify-center gap-2 text-[11px] text-slate-400">
+                            <span id="dbStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                            <span id="dbStatusText">ক্লাউড ডাটাবেজ কানেক্ট হচ্ছে...</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= TAB 2: CHECK STATUS & ID CARD ================= -->
+        <div id="sectionStatus" class="hidden space-y-8">
+            
+            <div class="max-w-2xl mx-auto bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+                <div class="text-center space-y-2">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mx-auto">
+                        <i data-lucide="search" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">রেজিস্ট্রেশন স্ট্যাটাস ও আইডি কার্ড খুঁজুন</h3>
+                    <p class="text-xs text-slate-400">আপনার ১১-ডিজিটের মোবাইল নম্বর অথবা রেজিস্ট্রেশন আইডি প্রবেশ করান</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="statusSearchInput" placeholder="উদাহরণ: 017XXXXXXXX অথবা VPL-2026-XXXX" class="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-mono">
+                    <button onclick="searchRegistrationStatus()" class="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-sm rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                        <span>খুঁজুন</span>
+                    </button>
+                </div>
+
+                <!-- Status Output Container -->
+                <div id="statusResultContainer" class="hidden pt-4">
+                    <!-- Dynamic status card injected via JS -->
+                </div>
+            </div>
+
+            <!-- Print Printable ID Card Modal / Preview Area -->
+            <div id="idCardDisplayContainer" class="hidden max-w-md mx-auto">
+                <!-- ID Card template -->
+            </div>
+
+        </div>
+
+        <!-- ================= TAB 3: ORGANIZER ADMIN PANEL ================= -->
+        <div id="sectionAdmin" class="hidden space-y-8">
+            
+            <!-- Passcode Modal / Gate -->
+            <div id="adminLockScreen" class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center space-y-5 shadow-2xl">
+                <div class="w-14 h-14 rounded-2xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center mx-auto">
+                    <i data-lucide="lock" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">আয়োজক কমিটি প্যানেল</h3>
+                    <p class="text-xs text-slate-400 mt-1">অ্যাডমিন প্রবেশাধিকারের জন্য সিকিউরিটি পাসকোড দিন</p>
+                </div>
+                <input type="password" id="adminPasscode" placeholder="পাসকোড লিখুন (vpl2026)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-center text-lg font-mono text-white focus:outline-none focus:border-teal-400">
+                <button onclick="unlockAdminPanel()" class="w-full py-3 bg-teal-600 hover:bg-teal-500 text-white font-bold text-sm rounded-xl shadow-lg transition-all">
+                    প্যানেল আনলক করুন
+                </button>
+            </div>
+
+            <!-- Dashboard Content (Hidden until passcode unlocked) -->
+            <div id="adminDashboardContent" class="hidden space-y-8">
+                
+                <!-- Admin Main Navigation Tabs -->
+                <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <button id="adminTabRosterBtn" onclick="switchAdminSubTab('roster')" class="px-4 py-2 bg-teal-600 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        <span>প্লেয়ার আবেদন তালিকা</span>
+                    </button>
+                    <button id="adminTabSettingsBtn" onclick="switchAdminSubTab('settings')" class="px-4 py-2 bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-colors">
+                        <i data-lucide="settings" class="w-4 h-4 text-amber-400"></i>
+                        <span>টুর্নামেন্ট সেটিংস (নম্বর ও ফি)</span>
+                    </button>
+                </div>
+
+                <!-- SUB-TAB 1: ROSTER & STATS -->
+                <div id="adminSubTabRoster" class="space-y-8">
+                    <!-- Admin Stats Counter -->
+                    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+                            <p class="text-[11px] text-slate-400 font-medium">মোট আবেদন</p>
+                            <h3 id="statTotal" class="text-2xl font-extrabold text-white mt-1">0</h3>
+                        </div>
+                        <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+                            <p class="text-[11px] text-slate-400 font-medium">পেন্ডিং (অপেক্ষমাণ)</p>
+                            <h3 id="statPending" class="text-2xl font-extrabold text-amber-400 mt-1">0</h3>
+                        </div>
+                        <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+                            <p class="text-[11px] text-slate-400 font-medium">অনুমোদিত (Approved)</p>
+                            <h3 id="statApproved" class="text-2xl font-extrabold text-emerald-400 mt-1">0</h3>
+                        </div>
+                        <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+                            <p class="text-[11px] text-slate-400 font-medium">বাতিল (Rejected)</p>
+                            <h3 id="statRejected" class="text-2xl font-extrabold text-red-400 mt-1">0</h3>
+                        </div>
+                        <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl col-span-2 sm:col-span-1">
+                            <p class="text-[11px] text-slate-400 font-medium">সংগৃহীত সর্বমোট ফি</p>
+                            <h3 id="statRevenue" class="text-2xl font-extrabold text-teal-300 mt-1">৳ 0</h3>
+                        </div>
+                    </div>
+
+                    <!-- Admin Controls & Table -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">আবেদনকারীদের তালিকা (Realtime)</h3>
+                                <p class="text-xs text-slate-400">পেমেন্ট ভেরিফাই করুন এবং স্ট্যাটাস আপডেট দিন</p>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-2.5">
+                                <div class="relative flex-grow sm:w-60">
+                                    <input type="text" id="adminSearchInput" oninput="filterAdminTable()" placeholder="নাম, ফোন বা TrxID..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-8 pr-3 py-2 text-xs text-white focus:outline-none focus:border-teal-400">
+                                    <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
+                                </div>
+
+                                <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
+                                    <button onclick="setFilterStatus('ALL')" id="filterAll" class="px-2.5 py-1.5 rounded-lg bg-teal-600 text-white">সব</button>
+                                    <button onclick="setFilterStatus('পেন্ডিং')" id="filterPending" class="px-2.5 py-1.5 rounded-lg text-slate-400 hover:text-white">পেন্ডিং</button>
+                                    <button onclick="setFilterStatus('অনুমোদিত')" id="filterApproved" class="px-2.5 py-1.5 rounded-lg text-slate-400 hover:text-white">অনুমোদিত</button>
+                                    <button onclick="setFilterStatus('বাতিল')" id="filterRejected" class="px-2.5 py-1.5 rounded-lg text-slate-400 hover:text-white">বাতিল</button>
+                                </div>
+
+                                <button onclick="downloadCSV()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow transition-colors flex items-center gap-1.5">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                    <span>এক্সেল (CSV) ডাউনলোড</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Registrations Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="text-[11px] text-slate-400 uppercase bg-slate-950/80 rounded-lg">
+                                    <tr>
+                                        <th class="px-3 py-3 rounded-l-lg">রেজি: আইডি</th>
+                                        <th class="px-3 py-3">খেলোয়াড়ের নাম & ছবি</th>
+                                        <th class="px-3 py-3">জার্সি & সাইজ</th>
+                                        <th class="px-3 py-3">পূর্ববর্তী দল</th>
+                                        <th class="px-3 py-3">যোগাযোগ</th>
+                                        <th class="px-3 py-3">পেমেন্ট মেথড (TrxID)</th>
+                                        <th class="px-3 py-3">স্ট্যাটাস</th>
+                                        <th class="px-3 py-3 text-right rounded-r-lg">অ্যাকশন</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminTableBody" class="divide-y divide-slate-800/60">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-TAB 2: DYNAMIC TOURNAMENT SETTINGS -->
+                <div id="adminSubTabSettings" class="hidden bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl max-w-2xl space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i data-lucide="sliders" class="w-5 h-5 text-amber-400"></i>
+                            টুর্নামেন্ট সেটিংস ও পরিবর্তন
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">এখানে বিকাশ/নগদ নম্বর, ফি বা তারিখ পরিবর্তন করলে তা ওয়েবসাইটে সাথে সাথে আপডেট হবে</p>
+                    </div>
+
+                    <form onsubmit="handleSaveSettings(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">বিকাশ নম্বর (bKash Number)</label>
+                                <input type="text" id="settingBkash" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">নগদ নম্বর (Nagad Number)</label>
+                                <input type="text" id="settingNagad" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400 font-mono">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">রেজিস্ট্রেশন ফি (টাকায়)</label>
+                                <input type="text" id="settingFee" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">রেজিস্ট্রেশনের শেষ তারিখ</label>
+                                <input type="text" id="settingLastDate" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" id="btnSaveSettings" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold text-sm rounded-xl shadow-lg hover:from-amber-400 hover:to-orange-400 transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="save" class="w-4 h-4"></i>
+                                <span>সেটিংস সেভ করুন (Save Settings)</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>© ২০২৬ ভাটাপাড়া প্রিমিয়ার লিগ (ভিপিএল)। সর্বস্বত্ব সংরক্ষিত।</p>
+            <p>পরিচালনায়: ভিপিএল টুর্নামেন্ট আয়োজক কমিটি</p>
+        </div>
+    </footer>
+
+    <!-- Firebase Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, updateDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global State
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vpl-app-2026';
+       // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBmwCjimzhzbr_1SFX-F_0r5elHt6R-6Zw",
+  authDomain: "vatapara-premier-league.firebaseapp.com",
+  projectId: "vatapara-premier-league",
+  storageBucket: "vatapara-premier-league.firebasestorage.app",
+  messagingSenderId: "739598587366",
+  appId: "1:739598587366:web:4baaecddfff3f0c620f227",
+  measurementId: "G-LVRCC72HTJ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        let isFirebaseAvailable = false;
+        
+        const COLLECTION_NAME = 'vpl_registrations';
+        const SETTINGS_COLLECTION = 'vpl_settings';
+
+        window.playersList = [];
+        window.activeFilter = 'ALL';
+        window.uploadedPhotoDataUrl = 'https://placehold.co/300x300/1e293b/94a3b8?text=Player+Photo';
+        window.isAdminUnlocked = false;
+
+        // Default Config Settings
+        window.tournamentConfig = {
+            bkashNumber: '01700-000000',
+            nagadNumber: '01800-000000',
+            regFee: '৫০০',
+            regFeeNum: 500,
+            lastDate: '১৫ নভেম্বর, ২০২৬'
+        };
+
+        // Initialize Firebase
+        async function initFirebaseApp() {
+            const dot = document.getElementById('dbStatusDot');
+            const txt = document.getElementById('dbStatusText');
+
+            if (!firebaseConfig) {
+                console.warn("Firebase Config not present. Running in browser local state mode.");
+                dot.className = "w-2 h-2 rounded-full bg-amber-400";
+                txt.textContent = "লোকাল স্টোরেজ মোড (অফলাইন)";
+                loadLocalFallbackData();
+                return;
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                if (token) {
+                    const userCred = await signInWithCustomToken(auth, token);
+                    currentUser = userCred.user;
+                } else {
+                    const userCred = await signInAnonymously(auth);
+                    currentUser = userCred.user;
+                }
+
+                isFirebaseAvailable = true;
+                dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+                txt.textContent = "ক্লাউড ডাটাবেজ সচল রয়েছে (Realtime Cloud Sync)";
+
+                // Attach Listeners
+                listenToFirestore();
+                listenToSettings();
+            } catch (err) {
+                console.error("Firebase init failed:", err);
+                dot.className = "w-2 h-2 rounded-full bg-amber-400";
+                txt.textContent = "অফলাইন মোড সচল";
+                loadLocalFallbackData();
+            }
+        }
+
+        function listenToFirestore() {
+            if (!db || !currentUser) return;
+            const colRef = collection(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME);
+
+            onSnapshot(colRef, (snapshot) => {
+                const list = [];
+                snapshot.forEach((doc) => {
+                    list.push({ id: doc.id, ...doc.data() });
+                });
+                list.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                window.playersList = list;
+                updateAdminDashboardUI();
+            }, (error) => {
+                console.error("Firestore onSnapshot error:", error);
+            });
+        }
+
+        function listenToSettings() {
+            if (!db || !currentUser) return;
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', SETTINGS_COLLECTION, 'config');
+            onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    window.tournamentConfig = { ...window.tournamentConfig, ...docSnap.data() };
+                    applyTournamentSettingsToUI();
+                }
+            }, (err) => {
+                console.error("Settings snapshot error:", err);
+            });
+        }
+
+        function loadLocalFallbackData() {
+            const saved = localStorage.getItem('vpl_local_registrations');
+            if (saved) window.playersList = JSON.parse(saved);
+
+            const savedSettings = localStorage.getItem('vpl_local_settings');
+            if (savedSettings) window.tournamentConfig = JSON.parse(savedSettings);
+
+            applyTournamentSettingsToUI();
+            updateAdminDashboardUI();
+        }
+
+        window.savePlayerToDatabase = async function(playerData) {
+            if (isFirebaseAvailable && db && currentUser) {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME, playerData.regId);
+                await setDoc(docRef, {
+                    ...playerData,
+                    createdAt: new Date().toISOString(),
+                    timestamp: Date.now()
+                });
+            } else {
+                window.playersList.unshift(playerData);
+                localStorage.setItem('vpl_local_registrations', JSON.stringify(window.playersList));
+                updateAdminDashboardUI();
+            }
+        };
+
+        window.saveSettingsToDatabase = async function(newSettings) {
+            window.tournamentConfig = newSettings;
+            applyTournamentSettingsToUI();
+
+            if (isFirebaseAvailable && db && currentUser) {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', SETTINGS_COLLECTION, 'config');
+                await setDoc(docRef, newSettings);
+            } else {
+                localStorage.setItem('vpl_local_settings', JSON.stringify(newSettings));
+            }
+        };
+
+        window.updatePlayerStatusInDb = async function(regId, newStatus) {
+            if (isFirebaseAvailable && db && currentUser) {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME, regId);
+                await updateDoc(docRef, {
+                    status: newStatus,
+                    updatedAt: new Date().toISOString()
+                });
+            } else {
+                const player = window.playersList.find(p => p.regId === regId);
+                if (player) {
+                    player.status = newStatus;
+                    localStorage.setItem('vpl_local_registrations', JSON.stringify(window.playersList));
+                    updateAdminDashboardUI();
+                }
+            }
+            showToast(`স্ট্যাটাস সফলভাবে '${newStatus}' হিসেবে আপডেট করা হয়েছে`, 'success');
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initFirebaseApp();
+        });
+    </script>
+
+    <!-- Standard App Logic -->
+    <script>
+        function applyTournamentSettingsToUI() {
+            const cfg = window.tournamentConfig;
+            if (!cfg) return;
+
+            document.getElementById('heroFeeDisplay').textContent = `৳ ${cfg.regFee}`;
+            document.getElementById('paymentFeeBadge').textContent = `৳ ${cfg.regFee}`;
+            document.getElementById('formFeeDisplay').textContent = `৳ ${cfg.regFee}`;
+            document.getElementById('heroLastDateDisplay').textContent = cfg.lastDate;
+            document.getElementById('bkashNumberDisplay').textContent = cfg.bkashNumber;
+            document.getElementById('nagadNumberDisplay').textContent = cfg.nagadNumber;
+
+            // Update inputs if admin settings active
+            const elB = document.getElementById('settingBkash');
+            const elN = document.getElementById('settingNagad');
+            const elF = document.getElementById('settingFee');
+            const elL = document.getElementById('settingLastDate');
+
+            if (elB) elB.value = cfg.bkashNumber;
+            if (elN) elN.value = cfg.nagadNumber;
+            if (elF) elF.value = cfg.regFee;
+            if (elL) elL.value = cfg.lastDate;
+        }
+
+        function copyBkashNumber() {
+            copyToClipboard(window.tournamentConfig.bkashNumber, 'বিকাশ নম্বর কপি হয়েছে');
+        }
+
+        function copyNagadNumber() {
+            copyToClipboard(window.tournamentConfig.nagadNumber, 'নগদ নম্বর কপি হয়েছে');
+        }
+
+        // Image Processing: Supports ANY image resolution & file size
+        function previewAndCompressImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        // Target dimensions for ID card / photo canvas
+                        const targetWidth = 400;
+                        const targetHeight = 500;
+
+                        canvas.width = targetWidth;
+                        canvas.height = targetHeight;
+                        const ctx = canvas.getContext('2d');
+
+                        // Clean high quality resize fill
+                        ctx.fillStyle = '#0f172a';
+                        ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+                        const hRatio = targetWidth / img.width;
+                        const vRatio = targetHeight / img.height;
+                        const ratio = Math.max(hRatio, vRatio);
+
+                        const centerShiftX = (targetWidth - img.width * ratio) / 2;
+                        const centerShiftY = (targetHeight - img.height * ratio) / 2;
+
+                        ctx.drawImage(img, 0, 0, img.width, img.height,
+                            centerShiftX, centerShiftY, img.width * ratio, img.height * ratio);
+
+                        window.uploadedPhotoDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                        document.getElementById('photoPreview').src = window.uploadedPhotoDataUrl;
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('playerName').value.trim();
+            const jerseyName = document.getElementById('jerseyName').value.trim();
+            const fatherName = document.getElementById('fatherName').value.trim();
+            const address = document.getElementById('playerAddress').value.trim();
+            const previousTeam = document.getElementById('previousTeam').value.trim();
+            const nid = document.getElementById('playerNid').value.trim() || 'প্রযোজ্য নয়';
+            const phone = document.getElementById('playerPhone').value.trim();
+            const whatsapp = document.getElementById('whatsappPhone').value.trim();
+            const role = document.getElementById('playerRole').value;
+            const batting = document.getElementById('battingStyle').value;
+            const bowling = document.getElementById('bowlingStyle').value;
+            const shirtSize = document.getElementById('shirtSize').value;
+            const method = document.getElementById('paymentMethod').value;
+            const senderPhone = document.getElementById('senderPhone').value.trim();
+            const trxId = document.getElementById('trxId').value.trim().toUpperCase();
+
+            if (window.uploadedPhotoDataUrl.includes('placehold.co')) {
+                showToast('অনুগ্রহ করে খেলোয়াড়ের ছবি আপলোড করুন', 'error');
+                return;
+            }
+
+            const regId = 'ভিপিএল-২০২৬-' + Math.floor(1000 + Math.random() * 9000);
+
+            const playerData = {
+                regId: regId,
+                name: name,
+                jerseyName: jerseyName,
+                fatherName: fatherName,
+                address: address,
+                previousTeam: previousTeam,
+                nid: nid,
+                phone: phone,
+                whatsapp: whatsapp,
+                role: role,
+                batting: batting,
+                bowling: bowling,
+                shirtSize: shirtSize,
+                paymentMethod: method,
+                senderPhone: senderPhone,
+                trxId: trxId,
+                amount: window.tournamentConfig.regFee,
+                status: 'পেন্ডিং',
+                photo: window.uploadedPhotoDataUrl,
+                date: new Date().toLocaleDateString('bn-BD')
+            };
+
+            const btn = document.getElementById('btnSubmitForm');
+            btn.disabled = true;
+            btn.innerHTML = `<span>সাবমিট হচ্ছে...</span>`;
+
+            try {
+                await window.savePlayerToDatabase(playerData);
+                showToast('আপনার রেজিস্ট্রেশন সফলভাবে গৃহীত হয়েছে!', 'success');
+                
+                switchTab('status');
+                document.getElementById('statusSearchInput').value = regId;
+                searchRegistrationStatus();
+
+                document.getElementById('registrationForm').reset();
+                window.uploadedPhotoDataUrl = 'https://placehold.co/300x300/1e293b/94a3b8?text=Player+Photo';
+                document.getElementById('photoPreview').src = window.uploadedPhotoDataUrl;
+
+            } catch (err) {
+                console.error(err);
+                showToast('জমা দিতে ব্যর্থ হয়েছে, পুনরায় চেষ্টা করুন', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span>রেজিস্ট্রেশন সাবমিট করুন</span><i data-lucide="check-circle-2" class="w-4 h-4"></i>`;
+                lucide.createIcons();
+            }
+        }
+
+        function searchRegistrationStatus() {
+            const query = document.getElementById('statusSearchInput').value.trim().toUpperCase();
+            const container = document.getElementById('statusResultContainer');
+            
+            if (!query) {
+                showToast('মোবাইল নম্বর অথবা আইডি প্রবেশ করান', 'error');
+                return;
+            }
+
+            const match = window.playersList.find(p => p.regId === query || p.phone === query || p.whatsapp === query);
+            container.classList.remove('hidden');
+
+            if (!match) {
+                container.innerHTML = `
+                    <div class="p-6 bg-red-950/40 border border-red-500/30 rounded-2xl text-center space-y-2">
+                        <i data-lucide="alert-circle" class="w-8 h-8 text-red-400 mx-auto"></i>
+                        <h4 class="font-bold text-white text-sm">কোনো রেকর্ড পাওয়া যায়নি</h4>
+                        <p class="text-xs text-slate-400">প্রদত্ত নম্বর বা রেজি: আইডি দিয়া কোনো নিবন্ধন পাওয়া যায়নি।</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            if (match.status === 'পেন্ডিং') {
+                container.innerHTML = `
+                    <div class="p-6 bg-amber-950/40 border border-amber-500/30 rounded-2xl text-center space-y-3">
+                        <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-bold rounded-full border border-amber-500/30">
+                            স্ট্যাটাস: পেন্ডিং (অপেক্ষমাণ)
+                        </span>
+                        <h4 class="font-bold text-white text-base">আবেদন প্রাপ্তি স্বীকার ও যাচাইকরণ</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            প্রিয় <strong>${match.name}</strong>, আপনার আবেদন এবং পেমেন্ট TrxID (${match.trxId}) আয়োজক কমিটির কাছে জমা হয়েছে। পেমেন্ট যাচাই শেষে আপনার ডিজিটাল প্লেয়ার আইডি কার্ড অনুমোদন করা হবে।
+                        </p>
+                        <div class="bg-slate-950 p-4 rounded-xl text-left text-xs space-y-1.5 border border-slate-800">
+                            <p class="text-slate-400">রেজিস্ট্রেশন আইডি: <strong class="text-amber-400 font-mono">${match.regId}</strong></p>
+                            <p class="text-slate-400">খেলোয়াড়ের ভূমিকা: <strong class="text-white">${match.role}</strong></p>
+                            <p class="text-slate-400">পূর্ববর্তী দল: <strong class="text-amber-300">${match.previousTeam}</strong></p>
+                        </div>
+                    </div>
+                `;
+            } else if (match.status === 'বাতিল') {
+                container.innerHTML = `
+                    <div class="p-6 bg-red-950/40 border border-red-500/30 rounded-2xl text-center space-y-2">
+                        <span class="inline-block px-3 py-1 bg-red-500/20 text-red-400 text-xs font-bold rounded-full border border-red-500/30">
+                            স্ট্যাটাস: আবেদন বাতিল
+                        </span>
+                        <h4 class="font-bold text-white text-base">আবেদনটি অনুমোদন করা হয়নি</h4>
+                        <p class="text-xs text-slate-300">প্রদত্ত পেমেন্ট ট্রানজেকশন তথ্যে অমিল থাকায় আবেদনটি বাতিল করা হয়েছে।</p>
+                    </div>
+                `;
+            } else if (match.status === 'অনুমোদিত') {
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-center">
+                            <p class="text-xs text-emerald-400 font-bold flex items-center justify-center gap-1.5">
+                                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                                অভিনন্দন! আপনার রেজিস্ট্রেশন ও পেমেন্ট অনুমোদিত হয়েছে।
+                            </p>
+                        </div>
+
+                        <!-- ID Card -->
+                        <div id="idCardPrintArea" class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-2 border-emerald-500/50 rounded-2xl p-5 shadow-2xl relative overflow-hidden text-white">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-amber-300 font-bold">
+                                        <i data-lucide="trophy" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-extrabold text-xs sm:text-sm tracking-wider">ভাটাপাড়া প্রিমিয়ার লিগ</h4>
+                                        <p class="text-[10px] text-emerald-400 font-medium">ভিপিএল ২০২৬ - অফিশিয়াল প্লেয়ার কার্ড</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono bg-slate-800 text-amber-400 px-2 py-0.5 rounded border border-slate-700 font-bold">
+                                    ${match.regId}
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-12 gap-3 items-center">
+                                <div class="col-span-4 text-center space-y-1">
+                                    <div class="w-20 h-24 mx-auto rounded-xl overflow-hidden border-2 border-amber-400 shadow bg-slate-950">
+                                        <img src="${match.photo}" class="w-full h-full object-cover" alt="Player">
+                                    </div>
+                                    <span class="inline-block px-1.5 py-0.5 bg-emerald-500 text-slate-950 text-[9px] font-black uppercase tracking-wider rounded">
+                                        VERIFIED PAID
+                                    </span>
+                                </div>
+
+                                <div class="col-span-8 space-y-1 text-xs">
+                                    <div>
+                                        <p class="text-[9px] text-slate-400 uppercase">খেলোয়াড়ের নাম</p>
+                                        <h5 class="text-sm font-extrabold text-white leading-tight">${match.name}</h5>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-1">
+                                        <div>
+                                            <p class="text-[9px] text-slate-400 uppercase">জার্সির নাম</p>
+                                            <p class="font-bold text-amber-400 text-xs">${match.jerseyName}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[9px] text-slate-400 uppercase">সাইজ</p>
+                                            <p class="font-bold text-emerald-400 text-xs">${match.shirtSize}</p>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-1">
+                                        <div>
+                                            <p class="text-[9px] text-slate-400 uppercase">রোল</p>
+                                            <p class="text-[10px] text-slate-200 truncate">${match.role}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[9px] text-slate-400 uppercase">পূর্ববর্তী দল</p>
+                                            <p class="text-[10px] text-amber-300 font-medium truncate">${match.previousTeam}</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-[9px] text-slate-400 uppercase">যোগাযোগ</p>
+                                        <p class="text-[10px] font-mono text-slate-300">${match.phone}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 border-t border-slate-800 pt-3 flex items-center justify-between">
+                                <div class="text-[9px] text-slate-400 space-y-0.5">
+                                    <p class="font-semibold text-slate-300">ভিপিএল আয়োজক কমিটি</p>
+                                    <p>অথরাইজড ডিজিটাল ভেরিফায়েড</p>
+                                </div>
+                                <div id="statusQrCode" class="p-1 bg-white rounded shadow"></div>
+                            </div>
+                        </div>
+
+                        <button onclick="window.print()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="printer" class="w-4 h-4"></i>
+                            <span>আইডি কার্ড প্রিন্ট / ডাউনলোড করুন</span>
+                        </button>
+                    </div>
+                `;
+
+                setTimeout(() => {
+                    const qrEl = document.getElementById('statusQrCode');
+                    if (qrEl) {
+                        qrEl.innerHTML = '';
+                        new QRCode(qrEl, {
+                            text: `${match.regId}:${match.name}`,
+                            width: 48,
+                            height: 48,
+                            colorDark : "#0b132b",
+                            colorLight : "#ffffff"
+                        });
+                    }
+                }, 100);
+            }
+
+            lucide.createIcons();
+        }
+
+        // Admin Navigation & Save Settings
+        function switchAdminSubTab(tab) {
+            const rosterSec = document.getElementById('adminSubTabRoster');
+            const settingsSec = document.getElementById('adminSubTabSettings');
+            const btnRoster = document.getElementById('adminTabRosterBtn');
+            const btnSettings = document.getElementById('adminTabSettingsBtn');
+
+            if (tab === 'roster') {
+                rosterSec.classList.remove('hidden');
+                settingsSec.classList.add('hidden');
+                btnRoster.className = "px-4 py-2 bg-teal-600 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow";
+                btnSettings.className = "px-4 py-2 bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-colors";
+            } else {
+                rosterSec.classList.add('hidden');
+                settingsSec.classList.remove('hidden');
+                btnRoster.className = "px-4 py-2 bg-slate-800 text-slate-300 hover:text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-colors";
+                btnSettings.className = "px-4 py-2 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-2 shadow";
+                applyTournamentSettingsToUI();
+            }
+        }
+
+        async function handleSaveSettings(event) {
+            event.preventDefault();
+            const bKash = document.getElementById('settingBkash').value.trim();
+            const nagad = document.getElementById('settingNagad').value.trim();
+            const fee = document.getElementById('settingFee').value.trim();
+            const lastDate = document.getElementById('settingLastDate').value.trim();
+
+            const newSettings = {
+                bkashNumber: bKash,
+                nagadNumber: nagad,
+                regFee: fee,
+                lastDate: lastDate
+            };
+
+            const btn = document.getElementById('btnSaveSettings');
+            btn.disabled = true;
+            btn.innerHTML = `<span>সেভ হচ্ছে...</span>`;
+
+            try {
+                await window.saveSettingsToDatabase(newSettings);
+                showToast('টুর্নামেন্ট সেটিংস সফলভাবে সেভ হয়েছে!', 'success');
+            } catch (err) {
+                console.error(err);
+                showToast('সেটিংস সেভ করতে সমস্যা হয়েছে', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i><span>সেটিংস সেভ করুন (Save Settings)</span>`;
+                lucide.createIcons();
+            }
+        }
+
+        function updateAdminDashboardUI() {
+            if (!window.isAdminUnlocked) return;
+
+            const list = window.playersList || [];
+            
+            const total = list.length;
+            const pending = list.filter(p => p.status === 'পেন্ডিং').length;
+            const approved = list.filter(p => p.status === 'অনুমোদিত').length;
+            const rejected = list.filter(p => p.status === 'বাতিল').length;
+
+            const feeNum = parseInt(window.tournamentConfig.regFee) || 500;
+            const revenue = approved * feeNum;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statApproved').textContent = approved;
+            document.getElementById('statRejected').textContent = rejected;
+            document.getElementById('statRevenue').textContent = `৳ ${revenue.toLocaleString('bn-BD')}`;
+
+            filterAdminTable();
+        }
+    </script>
+</body>
+</html>
