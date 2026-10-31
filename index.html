@@ -56,22 +56,22 @@
       <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider">ভাটাপাড়া প্রিমিয়ার লিগ ২০২৬</span>
       <h2 class="text-2xl md:text-4xl font-extrabold text-white">অনলাইন প্লেয়ার রেজিস্ট্রেশন চলছে!</h2>
       <p class="text-slate-300 text-sm md:text-base max-w-2xl mx-auto">
-        টুর্নামেন্টে অংশগ্রহণের জন্য নিচের ফর্মটি সঠিকভাবে পূরণ করুন এবং নির্ধারিত বিকাশ বা নগদ নম্বরে রেজিস্ট্রেশন ফি প্রদান করুন।
+        টুর্নামেন্টে অংশগ্রহণের জন্য নিচের ফর্মটি সঠিকভাবে পূরণ করুন এবং প্লেয়ারের ধরন অনুযায়ী নির্ধারিত ফি প্রদান করুন।
       </p>
       
       <!-- Dynamic Info Cards -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 pt-2 max-w-2xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 max-w-2xl mx-auto">
         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
-          <p class="text-xs text-slate-400">রেজিস্ট্রেশন ফি</p>
-          <p id="banner-fee" class="text-lg font-bold text-emerald-400">৳ ৫০০ টাকা</p>
+          <p class="text-xs text-slate-400">নতুন প্লেয়ার ফি</p>
+          <p id="banner-fee-new" class="text-lg font-bold text-emerald-400">৳ ২০০০ টাকা</p>
+        </div>
+        <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+          <p class="text-xs text-slate-400">পুরাতন প্লেয়ার ফি</p>
+          <p id="banner-fee-old" class="text-lg font-bold text-cyan-400">৳ ১২০০ টাকা</p>
         </div>
         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
           <p class="text-xs text-slate-400">শেষ তারিখ</p>
           <p id="banner-deadline" class="text-lg font-bold text-amber-400">১৫ মে, ২০২৬</p>
-        </div>
-        <div class="col-span-2 md:col-span-1 bg-slate-800/80 p-3 rounded-xl border border-slate-700">
-          <p class="text-xs text-slate-400">পেমেন্ট মেথড</p>
-          <p class="text-lg font-bold text-pink-400">বিকাশ / নগদ</p>
         </div>
       </div>
     </div>
@@ -93,6 +93,16 @@
         <form id="reg-form" class="space-y-5" onsubmit="handleFormSubmit(event)">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             
+            <!-- Player Type Selection (Dynamic Fee) -->
+            <div class="md:col-span-2 bg-slate-900/80 p-4 rounded-xl border border-emerald-500/40">
+              <label class="block text-sm font-bold text-emerald-400 mb-1">প্লেয়ারের ধরন নির্বাচন করুন <span class="text-red-400">*</span></label>
+              <select id="p-playertype" required onchange="updateFeeDisplay()" class="w-full bg-slate-800 border border-emerald-500/60 rounded-lg px-4 py-3 text-slate-100 font-semibold focus:outline-none focus:border-emerald-400 text-base">
+                <option value="">-- প্লেয়ারের ধরন বেছে নিন --</option>
+                <option value="নতুন প্লেয়ার">নতুন প্লেয়ার (রেজিস্ট্রেশন ফি: ২০০০ টাকা)</option>
+                <option value="পুরাতন প্লেয়ার">পুরাতন প্লেয়ার (রেজিস্ট্রেশন ফি: ১২০০ টাকা)</option>
+              </select>
+            </div>
+
             <!-- Full Name -->
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">খেলোয়াড়ের পুরো নাম <span class="text-red-400">*</span></label>
@@ -204,14 +214,14 @@
 
           </div>
 
-          <!-- Payment Details Box -->
+          <!-- Payment Details Box (Dynamic Fee Update) -->
           <div class="bg-slate-900/90 border border-emerald-800/60 p-5 rounded-xl space-y-4 mt-6">
             <h4 class="text-base font-bold text-emerald-400 flex items-center gap-2">
               <i class="fa-solid fa-wallet"></i> ফি প্রদানের নির্দেশিকা (বিকাশ / নগদ)
             </h4>
             
             <p class="text-xs text-slate-300 leading-relaxed">
-              নিচের যেকোনো একটি নম্বরে <span id="payment-fee-text" class="text-emerald-400 font-bold">৳ ৫০০ টাকা</span> <b>Send Money</b> বা <b>Cash In</b> করে নিচে ট্রানজেকশন আইডি (TrxID) এবং যে নম্বর থেকে টাকা পাঠিয়েছেন তা লিখুন।
+              আপনার প্লেয়ার ক্যাটাগরি অনুযায়ী প্রদেয় ফি: <span id="payment-fee-text" class="text-emerald-400 font-bold text-sm bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">প্লেয়ার টাইপ সিলেক্ট করুন</span>। নিচের যেকোনো একটি নম্বরে <b>Send Money</b> বা <b>Cash In</b> করে ট্রানজেকশন আইডি (TrxID) দিন।
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -289,9 +299,15 @@
                 <p class="text-[10px] text-slate-400 uppercase">খেলোয়াড়ের নাম</p>
                 <p id="card-fullname" class="text-base font-bold text-white leading-tight">মো: রাশেদুল ইসলাম</p>
               </div>
-              <div>
-                <p class="text-[10px] text-slate-400 uppercase">জার্সির নাম</p>
-                <p id="card-jerseyname" class="text-sm font-bold text-emerald-300">RASHEL</p>
+              <div class="grid grid-cols-2 gap-1 text-[11px]">
+                <div>
+                  <p class="text-[10px] text-slate-400 uppercase">জার্সির নাম</p>
+                  <p id="card-jerseyname" class="text-sm font-bold text-emerald-300">RASHEL</p>
+                </div>
+                <div>
+                  <p class="text-[10px] text-slate-400 uppercase">টাইপ & ফি</p>
+                  <p id="card-typefee" class="text-xs font-bold text-cyan-300">নতুন (৳২০০০)</p>
+                </div>
               </div>
               <div class="grid grid-cols-2 gap-1 text-[11px]">
                 <div>
@@ -366,7 +382,7 @@
               <p id="stat-approved" class="text-xl font-bold text-emerald-400">০</p>
             </div>
             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-              <p class="text-xs text-slate-400">মোট সংগ্রহ</p>
+              <p class="text-xs text-slate-400">মোট সংগৃহীত ফি</p>
               <p id="stat-amount" class="text-xl font-bold text-pink-400">৳ ০</p>
             </div>
           </div>
@@ -391,6 +407,7 @@
                   <tr>
                     <th class="p-3">আইডি ও তারিখ</th>
                     <th class="p-3">খেলোয়াড়ের তথ্য</th>
+                    <th class="p-3">টাইপ & ফি</th>
                     <th class="p-3">রোল ও জার্সি</th>
                     <th class="p-3">পূর্ববর্তী দল</th>
                     <th class="p-3">পেমেন্ট (TrxID)</th>
@@ -400,7 +417,7 @@
                 </thead>
                 <tbody id="admin-table-body" class="divide-y divide-slate-700/60">
                   <tr>
-                    <td colspan="7" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td>
+                    <td colspan="8" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td>
                   </tr>
                 </tbody>
               </table>
@@ -426,8 +443,13 @@
             </div>
 
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">রেজিস্ট্রেশন ফি (টাকা)</label>
-              <input type="text" id="set-fee" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+              <label class="block text-xs font-medium text-slate-300 mb-1">নতুন প্লেয়ার ফি (টাকা)</label>
+              <input type="text" id="set-fee-new" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">পুরাতন প্লেয়ার ফি (টাকা)</label>
+              <input type="text" id="set-fee-old" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
             </div>
 
             <div>
@@ -458,7 +480,8 @@
     let localConfig = JSON.parse(localStorage.getItem('vpl_config') || JSON.stringify({
       bkashNumber: '01700-000000',
       nagadNumber: '01800-000000',
-      regFee: '৫০০',
+      feeNew: '২০০০',
+      feeOld: '১২০০',
       deadline: '১৫ মে, ২০২৬'
     }));
 
@@ -469,16 +492,36 @@
     });
 
     function applyConfigUI() {
-      document.getElementById('banner-fee').innerText = `৳ ${localConfig.regFee} টাকা`;
+      document.getElementById('banner-fee-new').innerText = `৳ ${localConfig.feeNew} টাকা`;
+      document.getElementById('banner-fee-old').innerText = `৳ ${localConfig.feeOld} টাকা`;
       document.getElementById('banner-deadline').innerText = localConfig.deadline;
-      document.getElementById('payment-fee-text').innerText = `৳ ${localConfig.regFee} টাকা`;
       document.getElementById('bkash-num-display').innerText = localConfig.bkashNumber;
       document.getElementById('nagad-num-display').innerText = localConfig.nagadNumber;
       
       document.getElementById('set-bkash').value = localConfig.bkashNumber;
       document.getElementById('set-nagad').value = localConfig.nagadNumber;
-      document.getElementById('set-fee').value = localConfig.regFee;
+      document.getElementById('set-fee-new').value = localConfig.feeNew;
+      document.getElementById('set-fee-old').value = localConfig.feeOld;
       document.getElementById('set-deadline').value = localConfig.deadline;
+      
+      updateFeeDisplay();
+    }
+
+    // Dynamic Fee update based on Player Type
+    function updateFeeDisplay() {
+      const playerType = document.getElementById('p-playertype').value;
+      const feeText = document.getElementById('payment-fee-text');
+      
+      if (playerType === 'নতুন প্লেয়ার') {
+        feeText.innerText = `৳ ${localConfig.feeNew || '২০০০'} টাকা (নতুন প্লেয়ার)`;
+        feeText.className = "text-emerald-400 font-bold text-sm bg-emerald-950 px-2.5 py-1 rounded border border-emerald-500/50";
+      } else if (playerType === 'পুরাতন প্লেয়ার') {
+        feeText.innerText = `৳ ${localConfig.feeOld || '১২০০'} টাকা (পুরাতন প্লেয়ার)`;
+        feeText.className = "text-cyan-300 font-bold text-sm bg-cyan-950 px-2.5 py-1 rounded border border-cyan-500/50";
+      } else {
+        feeText.innerText = `নতুন: ৳${localConfig.feeNew || '২০০০'} / পুরাতন: ৳${localConfig.feeOld || '১২০০'} টাকা`;
+        feeText.className = "text-amber-300 font-bold text-xs bg-slate-800 px-2 py-0.5 rounded border border-slate-700";
+      }
     }
 
     function switchTab(tab) {
@@ -489,7 +532,7 @@
       document.getElementById(`tab-${tab}`).classList.remove('hidden');
     }
 
-    // Automatic Canvas Image Compression Logic (Shrinks high-res photos to ~30KB)
+    // Canvas Auto Image Compression (~30-50KB)
     function previewAndCompressImage(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -501,7 +544,6 @@
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
           
-          // Max dimensions for player ID photo
           const maxWidth = 300;
           const scale = maxWidth / img.width;
           canvas.width = maxWidth;
@@ -509,7 +551,6 @@
 
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           
-          // Compress quality to 60% JPEG
           const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
           document.getElementById('photo-preview').src = compressedBase64;
         };
@@ -528,12 +569,21 @@
       e.preventDefault();
 
       try {
+        const playerType = document.getElementById('p-playertype').value;
+        if (!playerType) {
+          alert('অনুগ্রহ করে প্লেয়ারের ধরন নির্বাচন করুন!');
+          return;
+        }
+
+        const feeAmount = (playerType === 'নতুন প্লেয়ার') ? parseInt(localConfig.feeNew || 2000) : parseInt(localConfig.feeOld || 1200);
         const photoSrc = document.getElementById('photo-preview').src;
         const regId = 'ভিপিএল-২০২৬-' + Math.floor(1000 + Math.random() * 9000);
 
         const newPlayer = {
           id: regId,
           date: new Date().toLocaleDateString('bn-BD'),
+          playertype: playerType,
+          fee: feeAmount,
           fullname: document.getElementById('p-fullname').value,
           jerseyname: document.getElementById('p-jerseyname').value,
           guardian: document.getElementById('p-guardian').value,
@@ -555,10 +605,11 @@
         localRegistrations.unshift(newPlayer);
         localStorage.setItem('vpl_regs', JSON.stringify(localRegistrations));
 
-        alert(`অভিনন্দন! আপনার আবেদন সফলভাবে জমা হয়েছে।\nআপনার রেজিস্ট্রেশন আইডি: ${regId}`);
+        alert(`অভিনন্দন! আপনার আবেদন সফলভাবে জমা হয়েছে।\nপ্লেয়ার ধরন: ${playerType}\nপ্রদেয় ফি: ৳ ${feeAmount} টাকা\nআইডি: ${regId}`);
         
         document.getElementById('reg-form').reset();
         document.getElementById('photo-preview').src = 'https://via.placeholder.com/150/1e293b/94a3b8?text=Photo';
+        updateFeeDisplay();
         
         // Auto open status check
         document.getElementById('search-mobile').value = newPlayer.mobile;
@@ -566,7 +617,7 @@
         checkStatus();
         renderAdminTable();
       } catch (err) {
-        alert('আবেদন জমা দিতে সমস্যা হয়েছে। অনুগ্রহ করে ছোট বা স্পষ্ট ছবি নির্বাচন করুন।');
+        alert('আবেদন জমা দিতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');
         console.error(err);
       }
     }
@@ -584,6 +635,7 @@
       document.getElementById('card-regid').innerText = player.id;
       document.getElementById('card-fullname').innerText = player.fullname;
       document.getElementById('card-jerseyname').innerText = player.jerseyname;
+      document.getElementById('card-typefee').innerText = `${player.playertype || 'নতুন'} (৳${player.fee || 2000})`;
       document.getElementById('card-role').innerText = player.role;
       document.getElementById('card-jerseysize').innerText = player.jerseysize;
       document.getElementById('card-prevteam').innerText = player.prevteam;
@@ -630,18 +682,26 @@
         return matchesSearch && matchesFilter;
       });
 
-      // Stats Update
+      // Stats Update: Dynamic revenue calculation based on player type fee
+      let totalApprovedRevenue = 0;
+      localRegistrations.filter(p => p.status === 'অনুমোদিত').forEach(p => {
+        const fee = p.fee ? parseInt(p.fee) : (p.playertype === 'পুরাতন প্লেয়ার' ? 1200 : 2000);
+        totalApprovedRevenue += fee;
+      });
+
       document.getElementById('stat-total').innerText = localRegistrations.length;
       document.getElementById('stat-pending').innerText = localRegistrations.filter(p => p.status === 'পেন্ডিং').length;
       document.getElementById('stat-approved').innerText = localRegistrations.filter(p => p.status === 'অনুমোদিত').length;
-      document.getElementById('stat-amount').innerText = `৳ ${localRegistrations.filter(p => p.status === 'অনুমোদিত').length * parseInt(localConfig.regFee || 500)}`;
+      document.getElementById('stat-amount').innerText = `৳ ${totalApprovedRevenue}`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = filtered.map(p => `
+      tbody.innerHTML = filtered.map(p => {
+        const playerFee = p.fee ? p.fee : (p.playertype === 'পুরাতন প্লেয়ার' ? 1200 : 2000);
+        return `
         <tr class="hover:bg-slate-750">
           <td class="p-3">
             <p class="font-mono font-bold text-emerald-400">${p.id}</p>
@@ -650,6 +710,12 @@
           <td class="p-3">
             <p class="font-bold text-white">${p.fullname}</p>
             <p class="text-[10px] text-slate-400">মোবাইল: ${p.mobile}</p>
+          </td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.playertype === 'পুরাতন প্লেয়ার' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'}">
+              ${p.playertype || 'নতুন'}
+            </span>
+            <p class="text-[11px] font-bold text-slate-200 mt-0.5">৳ ${playerFee}</p>
           </td>
           <td class="p-3">
             <p class="text-slate-200">${p.role}</p>
@@ -677,7 +743,7 @@
             </div>
           </td>
         </tr>
-      `).join('');
+      `}).join('');
     }
 
     function approvePlayer(id) {
@@ -698,7 +764,7 @@
       }
     }
 
-    // Delete Player Functionality for Admin
+    // Permanent Delete Option for Admin
     function deletePlayer(id) {
       if (confirm('আপনি কি নিশ্চিত যে এই আবেদনটি চিরতরে মুছে ফেলতে চান? (এই সিদ্ধান্ত আর ফেরত নেওয়া যাবে না)')) {
         localRegistrations = localRegistrations.filter(p => p.id !== id);
@@ -712,7 +778,8 @@
       localConfig = {
         bkashNumber: document.getElementById('set-bkash').value,
         nagadNumber: document.getElementById('set-nagad').value,
-        regFee: document.getElementById('set-fee').value,
+        feeNew: document.getElementById('set-fee-new').value,
+        feeOld: document.getElementById('set-fee-old').value,
         deadline: document.getElementById('set-deadline').value
       };
       localStorage.setItem('vpl_config', JSON.stringify(localConfig));
