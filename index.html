@@ -1,14 +1,12 @@
+```html
 <!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ভাটাপাড়া প্রিমিয়ার লিগ (ভিপিএল) - প্লেয়ার রেজিস্ট্রেশন</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts (Bangla) -->
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Hind Siliguri', sans-serif; }
@@ -21,7 +19,6 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
 
-  <!-- Header / Navigation Bar -->
   <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-40 shadow-lg">
     <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-3">
@@ -39,7 +36,6 @@
     </div>
   </header>
 
-  <!-- Tournament Banner & Notice -->
   <div class="bg-gradient-to-r from-emerald-900 via-slate-800 to-emerald-950 border-b border-emerald-800/50 py-6 px-4">
     <div class="max-w-4xl mx-auto text-center space-y-3">
       <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider">ভাটাপাড়া প্রিমিয়ার লিগ ২০২৬</span>
@@ -47,8 +43,6 @@
       <p class="text-slate-300 text-sm md:text-base max-w-2xl mx-auto">
         টুর্নামেন্টে অংশগ্রহণের জন্য নিচের ফর্মটি সঠিকভাবে পূরণ করুন এবং নির্ধারিত বিকাশ বা নগদ নম্বরে রেজিস্ট্রেশন ফি প্রদান করুন।
       </p>
-      
-      <!-- Dynamic Info Cards -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 max-w-3xl mx-auto">
         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
           <p class="text-xs text-slate-400">নতুন প্লেয়ার ফি</p>
@@ -70,10 +64,7 @@
     </div>
   </div>
 
-  <!-- Main Container -->
   <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full">
-
-    <!-- TAB 1: Registration Form -->
     <div id="tab-register" class="space-y-6">
       <div class="bg-slate-800 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-xl">
         <div class="border-b border-slate-700 pb-4 mb-6">
@@ -85,8 +76,6 @@
 
         <form id="reg-form" class="space-y-5" onsubmit="handleFormSubmit(event)">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            <!-- Player Type (New / Old) -->
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-slate-300 mb-1">প্লেয়ারের ধরন <span class="text-red-400">*</span></label>
               <select id="p-playertype" required onchange="updateFeeDisplay()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-emerald-300 font-bold focus:outline-none focus:border-emerald-500">
@@ -95,49 +84,34 @@
               </select>
             </div>
 
-            <!-- Full Name -->
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">খেলোয়াড়ের পুরো নাম <span class="text-red-400">*</span></label>
               <input type="text" id="p-fullname" required placeholder="যেমন: মো: রাশেদুল ইসলাম" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
-
-            <!-- Jersey Name -->
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">জার্সির নাম / ডাক নাম <span class="text-red-400">*</span></label>
               <input type="text" id="p-jerseyname" required placeholder="যেমন: RASHEL" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
-
-            <!-- Father/Guardian Name -->
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">পিতা / অভিভাবকের নাম <span class="text-red-400">*</span></label>
               <input type="text" id="p-guardian" required placeholder="অভিভাবকের পুরো নাম" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
-
-            <!-- Mobile Number -->
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">মোবাইল নম্বর <span class="text-red-400">*</span></label>
               <input type="tel" id="p-mobile" required placeholder="017XXXXXXXX" pattern="[0-9]{11}" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
-
-            <!-- NID/Birth Certificate (OPTIONAL) -->
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">এনআইডি / জন্ম নিবন্ধন <span class="text-slate-500 text-xs">(ঐচ্ছিক)</span></label>
               <input type="text" id="p-nid" placeholder="NID বা জন্ম নিবন্ধন নম্বর" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
-
-            <!-- Address / Village -->
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">ঠিকানা / গ্রাম / পাড়া <span class="text-red-400">*</span></label>
               <input type="text" id="p-address" required placeholder="যেমন: ভাটাপাড়া, ওয়ার্ড নং ০৬" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
-
-            <!-- Previous Team Name (MANDATORY) -->
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-slate-300 mb-1">পূর্ববর্তী দলের নাম <span class="text-red-400">*</span></label>
               <input type="text" id="p-prevteam" required placeholder="গত মৌসুমে যে দলের হয়ে খেলেছেন (বা কোনো দল না খেলে থাকলে 'নাই' লিখুন)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
-
-            <!-- Playing Role -->
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">খেলার রোল <span class="text-red-400">*</span></label>
               <select id="p-role" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
@@ -148,8 +122,6 @@
                 <option value="স্পিন বোলার">স্পিন বোলার (Spin Bowler)</option>
               </select>
             </div>
-
-            <!-- Jersey Size -->
             <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">জার্সির সাইজ <span class="text-red-400">*</span></label>
               <select id="p-jerseysize" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
@@ -160,8 +132,6 @@
                 <option value="XXL">XXL (Double Extra Large)</option>
               </select>
             </div>
-
-            <!-- Photo Upload with Auto Compression -->
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-slate-300 mb-1">খেলোয়াড়ের ছবি আপলোড করুন <span class="text-red-400">*</span></label>
               <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-900 p-4 rounded-lg border border-slate-700">
@@ -172,21 +142,16 @@
                 </div>
               </div>
             </div>
-
           </div>
 
-          <!-- Payment Details Box -->
           <div class="bg-slate-900/90 border border-emerald-800/60 p-5 rounded-xl space-y-4 mt-6">
             <h4 class="text-base font-bold text-emerald-400 flex items-center gap-2">
               <i class="fa-solid fa-wallet"></i> ফি প্রদানের নির্দেশিকা (বিকাশ / নগদ)
             </h4>
-            
             <p class="text-xs text-slate-300 leading-relaxed">
               নিচের যেকোনো একটি নম্বরে <span id="payment-fee-text" class="text-emerald-400 font-bold text-lg bg-emerald-900/50 px-2 py-0.5 rounded">৳ ২০০০ টাকা</span> <b>Send Money</b> বা <b>Cash In</b> করে নিচে ট্রানজেকশন আইডি (TrxID) এবং যে নম্বর থেকে টাকা পাঠিয়েছেন তা লিখুন।
             </p>
-
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <!-- bKash -->
               <div class="bg-slate-800 p-3 rounded-lg border border-pink-900/50 flex justify-between items-center">
                 <div>
                   <p class="text-xs text-pink-400 font-bold">bKash (Personal)</p>
@@ -194,8 +159,6 @@
                 </div>
                 <button type="button" onclick="copyNum('bkash-num-display')" class="text-xs bg-pink-950 text-pink-300 border border-pink-800 px-2 py-1 rounded hover:bg-pink-900">কপি</button>
               </div>
-
-              <!-- Nagad -->
               <div class="bg-slate-800 p-3 rounded-lg border border-orange-900/50 flex justify-between items-center">
                 <div>
                   <p class="text-xs text-orange-400 font-bold">Nagad (Personal)</p>
@@ -204,21 +167,17 @@
                 <button type="button" onclick="copyNum('nagad-num-display')" class="text-xs bg-orange-950 text-orange-300 border border-orange-800 px-2 py-1 rounded hover:bg-orange-900">কপি</button>
               </div>
             </div>
-
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div>
                 <label class="block text-xs font-medium text-slate-300 mb-1">যে নম্বর থেকে টাকা পাঠিয়েছেন <span class="text-red-400">*</span></label>
                 <input type="tel" id="p-senderphone" required placeholder="017XXXXXXXX" pattern="[0-9]{11}" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
               </div>
-
               <div>
                 <label class="block text-xs font-medium text-slate-300 mb-1">ট্রানজেকশন আইডি (TrxID) <span class="text-red-400">*</span></label>
                 <input type="text" id="p-trxid" required placeholder="যেমন: 9J38XKS8L" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono text-emerald-300 uppercase focus:outline-none focus:border-emerald-500">
               </div>
             </div>
           </div>
-
-          <!-- Submit Button -->
           <div class="pt-4">
             <button type="submit" id="submit-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition flex justify-center items-center gap-2">
               <i class="fa-solid fa-paper-plane"></i> নিবন্ধন সম্পন্ন করুন
@@ -228,20 +187,16 @@
       </div>
     </div>
 
-    <!-- TAB 2: Status & Player ID Card -->
     <div id="tab-status" class="space-y-6 hidden">
       <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl max-w-xl mx-auto text-center space-y-4">
         <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-id-card text-emerald-400"></i> আপনার নিবন্ধনের স্ট্যাটাস ও আইডি কার্ড</h3>
         <p class="text-xs text-slate-400">নিবন্ধনের সময় ব্যবহৃত ১১ ডিজিটের মোবাইল নম্বর দিয়ে আপনার আবেদন ও কার্ড যাচাই করুন।</p>
-        
         <div class="flex gap-2">
-          <input type="tel" id="search-mobile" placeholder="017XXXXXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
+          <input type="tel" id="search-mobile" placeholder="VPL-2026-XXXXXXXXXXXXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
           <button onclick="checkStatus()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2.5 rounded-lg transition whitespace-nowrap">খুঁজুন</button>
         </div>
       </div>
-
-      <!-- Result Container -->
-      <div id="status-result" class="hidden max-w-md mx-auto">
+            <div id="status-result" class="hidden max-w-md mx-auto">
         <div id="printable-id-card" class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 border-2 border-emerald-500/50 rounded-2xl p-6 shadow-2xl relative overflow-hidden space-y-4">
           <div class="text-center border-b border-slate-700 pb-3">
             <span class="bg-emerald-500 text-slate-950 font-bold text-xs px-2.5 py-0.5 rounded-full uppercase">অফিশিয়াল প্লেয়ার কার্ড</span>
@@ -260,14 +215,8 @@
                 <p id="card-jerseyname" class="text-sm font-bold text-emerald-300">নাম</p>
               </div>
               <div class="grid grid-cols-2 gap-1 text-[11px]">
-                <div>
-                  <span class="text-slate-400">রোল:</span>
-                  <span id="card-role" class="text-slate-200 font-medium">-</span>
-                </div>
-                <div>
-                  <span class="text-slate-400">সাইজ:</span>
-                  <span id="card-jerseysize" class="text-slate-200 font-medium">-</span>
-                </div>
+                <div><span class="text-slate-400">রোল:</span> <span id="card-role" class="text-slate-200 font-medium">-</span></div>
+                <div><span class="text-slate-400">সাইজ:</span> <span id="card-jerseysize" class="text-slate-200 font-medium">-</span></div>
               </div>
             </div>
           </div>
@@ -287,29 +236,30 @@
       </div>
     </div>
 
-    <!-- TAB 3: Admin Dashboard -->
     <div id="tab-admin" class="space-y-6 hidden">
-      <!-- Passcode Login Box -->
       <div id="admin-login-box" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl max-w-md mx-auto text-center space-y-4">
         <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-2xl border border-emerald-500/20">
           <i class="fa-solid fa-lock"></i>
         </div>
         <h3 class="text-lg font-bold text-white">আয়োজক এডমিন ড্যাশবোর্ড</h3>
-        <p class="text-xs text-slate-400">প্যানেলে প্রবেশ করতে পাসকোডটি দিন। (ডিফল্ট: vpl2026)</p>
+        <p class="text-xs text-slate-400">প্যানেলে প্রবেশ করতে Firebase Admin Email ও Password দিন।</p>
         <div class="flex gap-2">
-          <input type="password" id="admin-passcode" placeholder="পাসকোড দিন" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+          <input type="email" id="admin-email" placeholder="Admin email" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+          <input type="password" id="admin-passcode" placeholder="Firebase Admin Password" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
           <button onclick="unlockAdmin()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2 rounded-lg transition">লগইন</button>
         </div>
       </div>
 
-      <!-- Protected Admin Panel -->
       <div id="admin-panel" class="hidden space-y-6">
+        <div class="flex justify-between items-center text-xs text-slate-400">
+          <span>Signed in: <b id="admin-auth-email"></b></span>
+          <button onclick="adminLogout()" class="text-rose-300 underline">Logout</button>
+        </div>
         <div class="flex border-b border-slate-700">
           <button onclick="switchAdminTab('players')" id="adm-tab-btn-players" class="px-4 py-2 font-medium text-emerald-400 border-b-2 border-emerald-400 text-sm">নিবন্ধিত প্লেয়ার তালিকা</button>
           <button onclick="switchAdminTab('settings')" id="adm-tab-btn-settings" class="px-4 py-2 font-medium text-slate-400 hover:text-slate-200 text-sm">টুর্নামেন্ট সেটিংস</button>
         </div>
 
-        <!-- Section A: Players List -->
         <div id="adm-sec-players" class="space-y-4">
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
@@ -354,379 +304,521 @@
                     <th class="p-3 text-right">অ্যাকশন</th>
                   </tr>
                 </thead>
-                <tbody id="admin-table-body" class="divide-y divide-slate-700/60">
-                  <tr><td colspan="7" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>
+                <tbody id="admin-table-body" class="divide-y divide-slate-700">
+                  <tr><td colspan="7" class="p-6 text-center text-slate-500">ডেটা লোড হচ্ছে...</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- Section B: Dynamic Tournament Settings -->
-        <div id="adm-sec-settings" class="hidden space-y-4">
-          <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl max-w-xl mx-auto space-y-4">
-            <h4 class="text-base font-bold text-white border-b border-slate-700 pb-2">
-              <i class="fa-solid fa-sliders text-emerald-400"></i> টুর্নামেন্ট সেটিংস
-            </h4>
+        <div id="adm-sec-settings" class="hidden bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+          <h3 class="text-lg font-bold text-white">টুর্নামেন্ট সেটিংস</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">বিকাশ পার্সোনাল নম্বর</label>
-              <input type="text" id="set-bkash" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+              <label class="block text-sm text-slate-300 mb-1">বিকাশ নম্বর</label>
+              <input id="set-bkash" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white">
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">নগদ পার্সোনাল নম্বর</label>
-              <input type="text" id="set-nagad" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1">নতুন প্লেয়ার ফি</label>
-                <input type="text" id="set-fee-new" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-slate-300 mb-1">পুরাতন প্লেয়ার ফি</label>
-                <input type="text" id="set-fee-old" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
-              </div>
+              <label class="block text-sm text-slate-300 mb-1">নগদ নম্বর</label>
+              <input id="set-nagad" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white">
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">নিবন্ধনের শেষ তারিখ</label>
-              <input type="text" id="set-deadline" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+              <label class="block text-sm text-slate-300 mb-1">নতুন প্লেয়ার ফি</label>
+              <input id="set-fee-new" type="number" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white">
             </div>
-            <button onclick="saveSettings()" id="save-settings-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg transition">
-              সেটিংস সংরক্ষণ করুন
-            </button>
+            <div>
+              <label class="block text-sm text-slate-300 mb-1">পুরাতন প্লেয়ার ফি</label>
+              <input id="set-fee-old" type="number" min="0" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white">
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm text-slate-300 mb-1">রেজিস্ট্রেশনের শেষ তারিখ</label>
+              <input id="set-deadline" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white">
+            </div>
           </div>
+          <button id="save-settings-btn" onclick="saveSettings()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-lg">সেটিংস সংরক্ষণ করুন</button>
         </div>
       </div>
     </div>
   </main>
 
-  <footer class="bg-slate-950 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-    <p>© ২০২৬ ভাটাপাড়া প্রিমিয়ার লিগ (ভিপিএল)। সর্বস্বত্ব সংরক্ষিত।</p>
+  <footer class="bg-slate-950 border-t border-slate-800 py-5 text-center text-xs text-slate-500">
+    <p>© ২০২৬ ভাটাপাড়া প্রিমিয়ার লিগ (VPL)। সর্বস্বত্ব সংরক্ষিত।</p>
+    <p class="mt-1">Powered by VPL Organizing Committee</p>
   </footer>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getFirestore, collection, doc, setDoc, getDoc, onSnapshot,
+      writeBatch, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  <!-- Firebase Scripts (Real-time Cloud Sync) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, deleteDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-    // ==========================================
-    // ⚠️ আপনার ফায়ারবেজ কনফিগ এখানে বসান ⚠️
-    // ==========================================
+    // Firebase Project Configuration
     const firebaseConfig = {
-      // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBmwCjimzhzbr_1SFX-F_0r5elHt6R-6Zw",
-  authDomain: "vatapara-premier-league.firebaseapp.com",
-  projectId: "vatapara-premier-league",
-  storageBucket: "vatapara-premier-league.firebasestorage.app",
-  messagingSenderId: "739598587366",
-  appId: "1:739598587366:web:4baaecddfff3f0c620f227",
-  measurementId: "G-LVRCC72HTJ"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+      apiKey: "AIzaSyBmwCjimzhzbr_1SFX-F_0r5elHt6R-6Zw",
+      authDomain: "vatapara-premier-league.firebaseapp.com",
+      projectId: "vatapara-premier-league",
+      storageBucket: "vatapara-premier-league.firebasestorage.app",
+      messagingSenderId: "739598587366",
+      appId: "1:739598587366:web:4baaecddfff3f0c620f227"
     };
 
-    let db;
-    let isCloudActive = false;
+    // এখানে Firebase Authentication-এর Admin Email বসাবেন
+    const ADMIN_EMAIL = "nehalislamkhan75@gmail.com";
 
-    // Local Variables
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const $ = id => document.getElementById(id);
+
+    const DEFAULT_CONFIG = {
+      bkashNumber: "01700-000000",
+      nagadNumber: "01800-000000",
+      feeNew: "2000",
+      feeOld: "1200",
+      deadline: "১৫ মে, ২০২৬"
+    };
+
+    window.globalConfig = { ...DEFAULT_CONFIG };
     window.globalPlayers = [];
-    window.globalConfig = {
-      bkashNumber: '01762038988',
-      nagadNumber: '01762038988',
-      feeNew: '২০০০',
-      feeOld: '১২৫০',
-      deadline: '১০ নভেম্বর, ২০২৬'
-    };
+    let adminUnsubscribe = null;
+    let compressedPhotoData = "";
 
-    try {
-      if(firebaseConfig.apiKey !== "YOUR_API_KEY") {
-        const app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        isCloudActive = true;
-        
-        // Listen to Settings Live
-        onSnapshot(doc(db, "vpl_system", "settings"), (docSnap) => {
-          if (docSnap.exists()) {
-            window.globalConfig = docSnap.data();
-            applyConfigUI();
-          }
-        });
-
-        // Listen to Registrations Live
-        onSnapshot(collection(db, "vpl_registrations"), (snapshot) => {
-          window.globalPlayers = [];
-          snapshot.forEach((doc) => window.globalPlayers.push(doc.data()));
-          window.globalPlayers.sort((a, b) => b.timestamp - a.timestamp); // newest first
-          renderAdminTable();
-        });
-      }
-    } catch(e) {
-      console.warn("Firebase not properly configured. Running in local mode.");
+    function numeric(value) {
+      return Number(String(value || "0").replace(/[^\d.]/g, "")) || 0;
     }
 
-    // Default Fallback Initializer
-    window.addEventListener('DOMContentLoaded', () => {
-      applyConfigUI();
-      updateFeeDisplay();
-    });
+    function safe(value) {
+      return String(value ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#039;"
+      })[ch]);
+    }
 
-    window.applyConfigUI = function() {
-      document.getElementById('banner-fee-new').innerText = `৳ ${window.globalConfig.feeNew}`;
-      document.getElementById('banner-fee-old').innerText = `৳ ${window.globalConfig.feeOld}`;
-      document.getElementById('banner-deadline').innerText = window.globalConfig.deadline;
-      document.getElementById('bkash-num-display').innerText = window.globalConfig.bkashNumber;
-      document.getElementById('nagad-num-display').innerText = window.globalConfig.nagadNumber;
-      
-      document.getElementById('set-bkash').value = window.globalConfig.bkashNumber;
-      document.getElementById('set-nagad').value = window.globalConfig.nagadNumber;
-      document.getElementById('set-fee-new').value = window.globalConfig.feeNew;
-      document.getElementById('set-fee-old').value = window.globalConfig.feeOld;
-      document.getElementById('set-deadline').value = window.globalConfig.deadline;
+    function applyConfigUI() {
+      const c = window.globalConfig;
+      $("bkash-num-display").textContent = c.bkashNumber;
+      $("nagad-num-display").textContent = c.nagadNumber;
+      $("banner-fee-new").textContent = "৳ " + Number(c.feeNew).toLocaleString("en-US");
+      $("banner-fee-old").textContent = "৳ " + Number(c.feeOld).toLocaleString("en-US");
+      $("banner-deadline").textContent = c.deadline;
       updateFeeDisplay();
-    };
+    }
 
     window.updateFeeDisplay = function() {
-      const type = document.getElementById('p-playertype')?.value;
-      const amount = type === 'নতুন প্লেয়ার' ? window.globalConfig.feeNew : window.globalConfig.feeOld;
-      document.getElementById('payment-fee-text').innerText = `৳ ${amount} টাকা`;
+      const isNew = $("p-playertype").value === "নতুন প্লেয়ার";
+      const fee = isNew ? window.globalConfig.feeNew : window.globalConfig.feeOld;
+      $("payment-fee-text").textContent = "৳ " + Number(fee).toLocaleString("en-US") + " টাকা";
     };
 
-    window.saveSettings = async function() {
-      const btn = document.getElementById('save-settings-btn');
-      btn.innerText = "সংরক্ষণ হচ্ছে...";
-      
-      const updatedConfig = {
-        bkashNumber: document.getElementById('set-bkash').value,
-        nagadNumber: document.getElementById('set-nagad').value,
-        feeNew: document.getElementById('set-fee-new').value,
-        feeOld: document.getElementById('set-fee-old').value,
-        deadline: document.getElementById('set-deadline').value
-      };
-
-      if (isCloudActive) {
-        await setDoc(doc(db, "vpl_system", "settings"), updatedConfig);
+    async function loadSettings() {
+      const snap = await getDoc(doc(db, "vpl_system", "settings"));
+      if (snap.exists()) {
+        window.globalConfig = { ...DEFAULT_CONFIG, ...snap.data() };
+      } else {
+        window.globalConfig = { ...DEFAULT_CONFIG };
       }
-      
-      window.globalConfig = updatedConfig;
       applyConfigUI();
-      btn.innerText = "সেটিংস সংরক্ষণ করুন";
-      alert('সেটিংস সফলভাবে রিয়েল-টাইমে আপডেট হয়েছে!');
+    }
+
+    window.previewAndCompressImage = function(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        alert("শুধুমাত্র ছবির ফাইল নির্বাচন করুন।");
+        event.target.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const maxSide = 600;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height && width > maxSide) {
+            height = Math.round(height * maxSide / width);
+            width = maxSide;
+          } else if (height > maxSide) {
+            width = Math.round(width * maxSide / height);
+            height = maxSide;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          let quality = 0.65;
+          let data = canvas.toDataURL("image/jpeg", quality);
+
+          while (data.length > 250000 && quality > 0.25) {
+            quality -= 0.08;
+            data = canvas.toDataURL("image/jpeg", quality);
+          }
+
+          compressedPhotoData = data;
+          $("photo-preview").src = data;
+        };
+        img.onerror = () => alert("ছবিটি পড়া যায়নি। অন্য ছবি দিন।");
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     };
 
-    window.handleFormSubmit = async function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submit-btn');
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> আপলোড হচ্ছে...`;
-      
-      try {
-        const photoSrc = document.getElementById('photo-preview').src;
-        const regId = 'ভিপিএল-২০২৬-' + Math.floor(1000 + Math.random() * 9000);
-        const playerType = document.getElementById('p-playertype').value;
-        const feeAmount = playerType === 'নতুন প্লেয়ার' ? window.globalConfig.feeNew : window.globalConfig.feeOld;
+    window.handleFormSubmit = async function(event) {
+      event.preventDefault();
 
-        const newPlayer = {
-          id: regId,
+      if (!compressedPhotoData) {
+        alert("আগে খেলোয়াড়ের ছবি আপলোড করুন।");
+        return;
+      }
+
+      const btn = $("submit-btn");
+      btn.disabled = true;
+      btn.textContent = "জমা হচ্ছে...";
+
+      try {
+        const playerType = $("p-playertype").value;
+        const feeAmount = playerType === "নতুন প্লেয়ার"
+          ? window.globalConfig.feeNew
+          : window.globalConfig.feeOld;
+
+        const id = "VPL-2026-" + Date.now().toString(36).toUpperCase();
+
+        const player = {
+          id,
+          playerType,
+          fullname: $("p-fullname").value.trim(),
+          jerseyname: $("p-jerseyname").value.trim(),
+          guardian: $("p-guardian").value.trim(),
+          mobile: $("p-mobile").value.trim(),
+          nid: $("p-nid").value.trim(),
+          address: $("p-address").value.trim(),
+          prevteam: $("p-prevteam").value.trim(),
+          role: $("p-role").value,
+          jerseysize: $("p-jerseysize").value,
+          senderphone: $("p-senderphone").value.trim(),
+          trxid: $("p-trxid").value.trim().toUpperCase(),
+          feeAmount,
+          photo: compressedPhotoData,
+          status: "পেন্ডিং",
           timestamp: Date.now(),
-          date: new Date().toLocaleDateString('bn-BD'),
-          playerType: playerType,
-          feeAmount: feeAmount,
-          fullname: document.getElementById('p-fullname').value,
-          jerseyname: document.getElementById('p-jerseyname').value,
-          mobile: document.getElementById('p-mobile').value,
-          nid: document.getElementById('p-nid').value || 'N/A',
-          prevteam: document.getElementById('p-prevteam').value,
-          role: document.getElementById('p-role').value,
-          jerseysize: document.getElementById('p-jerseysize').value,
-          senderphone: document.getElementById('p-senderphone').value,
-          trxid: document.getElementById('p-trxid').value,
-          photo: photoSrc,
-          status: 'পেন্ডিং'
+          createdAt: serverTimestamp()
         };
 
-        if (isCloudActive) {
-          await setDoc(doc(db, "vpl_registrations", regId), newPlayer);
-        } else {
-          window.globalPlayers.unshift(newPlayer); // Local fallback
+        const batch = writeBatch(db);
+        batch.set(doc(db, "vpl_registrations", id), player);
+
+        batch.set(doc(db, "vpl_public_status", id), {
+          id,
+          fullname: player.fullname,
+          jerseyname: player.jerseyname,
+          role: player.role,
+          jerseysize: player.jerseysize,
+          prevteam: player.prevteam,
+          photo: player.photo,
+          status: player.status
+        });
+
+        await batch.commit();
+
+        alert("আপনার নিবন্ধন সফলভাবে জমা হয়েছে!\nআপনার Registration ID: " + id);
+
+        $("reg-form").reset();
+        compressedPhotoData = "";
+        $("photo-preview").src = "https://via.placeholder.com/150/1e293b/94a3b8?text=Photo";
+        $("search-mobile").value = id;
+        window.switchTab("status");
+        await window.checkStatus();
+
+      } catch (err) {
+        console.error("Registration failed:", err);
+        alert("আবেদন জমা হয়নি: " + (err.code || err.message || "অজানা সমস্যা") +
+          "\nFirestore Rules এবং Firebase config পরীক্ষা করুন।");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> নিবন্ধন সম্পন্ন করুন';
+      }
+    };
+
+    window.checkStatus = async function() {
+      const id = $("search-mobile").value.trim();
+
+      if (!id.startsWith("VPL-2026-")) {
+        alert("Registration ID লিখুন (যেমন VPL-2026-XXXXXXXXXXXXXXX)।");
+        return;
+      }
+
+      try {
+        const snap = await getDoc(doc(db, "vpl_public_status", id));
+
+        if (!snap.exists()) {
+          alert("এই Registration ID পাওয়া যায়নি।");
+          $("status-result").classList.add("hidden");
+          return;
         }
 
-        alert(`অভিনন্দন! আপনার আবেদন সফলভাবে জমা হয়েছে।\nআইডি: ${regId}`);
-        document.getElementById('reg-form').reset();
-        document.getElementById('photo-preview').src = 'https://via.placeholder.com/150/1e293b/94a3b8?text=Photo';
-        
-        document.getElementById('search-mobile').value = newPlayer.mobile;
-        switchTab('status');
-        checkStatus();
+        const p = snap.data();
+
+        $("card-regid").textContent = p.id;
+        $("card-fullname").textContent = p.fullname;
+        $("card-jerseyname").textContent = p.jerseyname;
+        $("card-role").textContent = p.role;
+        $("card-jerseysize").textContent = p.jerseysize;
+        $("card-prevteam").textContent = p.prevteam;
+        $("card-photo").src = p.photo;
+
+        const badge = $("card-status-badge");
+        badge.textContent = p.status === "অনুমোদিত"
+          ? "অনুমোদিত (Approved)"
+          : "পেন্ডিং (অপেক্ষমাণ)";
+
+        badge.className = p.status === "অনুমোদিত"
+          ? "px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+          : "px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+
+        $("status-result").classList.remove("hidden");
+
       } catch (err) {
-        alert('সমস্যা হয়েছে! ইন্টারনেট কানেকশন বা কনফিগ চেক করুন।');
+        console.error(err);
+        alert("স্ট্যাটাস দেখা যায়নি: " + err.message);
       }
-      btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> নিবন্ধন সম্পন্ন করুন`;
     };
 
     window.changeStatus = async function(id, newStatus) {
-      if (isCloudActive) {
-        await updateDoc(doc(db, "vpl_registrations", id), { status: newStatus });
-      } else {
-        const p = window.globalPlayers.find(x => x.id === id);
-        if(p) p.status = newStatus;
-        renderAdminTable();
+      try {
+        const batch = writeBatch(db);
+        batch.update(doc(db, "vpl_registrations", id), { status: newStatus });
+        batch.update(doc(db, "vpl_public_status", id), { status: newStatus });
+        await batch.commit();
+      } catch (err) {
+        alert("স্ট্যাটাস পরিবর্তন হয়নি: " + err.message);
       }
     };
 
     window.deletePlayer = async function(id) {
-      if (confirm('আপনি কি নিশ্চিত যে এই আবেদনটি চিরতরে মুছে ফেলতে চান?')) {
-        if (isCloudActive) {
-          await deleteDoc(doc(db, "vpl_registrations", id));
-        } else {
-          window.globalPlayers = window.globalPlayers.filter(x => x.id !== id);
-          renderAdminTable();
-        }
+      if (!confirm("আপনি কি নিশ্চিত যে এই আবেদনটি চিরতরে মুছে ফেলতে চান?")) return;
+
+      try {
+        const batch = writeBatch(db);
+        batch.delete(doc(db, "vpl_registrations", id));
+        batch.delete(doc(db, "vpl_public_status", id));
+        await batch.commit();
+      } catch (err) {
+        alert("Delete করা যায়নি: " + err.message);
       }
     };
 
     window.renderAdminTable = function() {
-      const tbody = document.getElementById('admin-table-body');
-      const search = document.getElementById('admin-search')?.value.toLowerCase() || '';
-      const filter = document.getElementById('admin-filter')?.value || 'ALL';
+      const tbody = $("admin-table-body");
+      const search = $("admin-search").value.toLowerCase().trim();
+      const filter = $("admin-filter").value;
+      const all = window.globalPlayers;
 
-      let filtered = window.globalPlayers.filter(p => {
-        const matchSearch = p.fullname.toLowerCase().includes(search) || p.mobile.includes(search) || p.trxid.toLowerCase().includes(search);
-        const matchFilter = filter === 'ALL' || p.status === filter;
-        return matchSearch && matchFilter;
-      });
+      const filtered = all.filter(p =>
+        [p.fullname, p.mobile, p.trxid, p.id].join(" ").toLowerCase().includes(search) &&
+        (filter === "ALL" || p.status === filter)
+      );
 
-      document.getElementById('stat-total').innerText = window.globalPlayers.length;
-      document.getElementById('stat-pending').innerText = window.globalPlayers.filter(p => p.status === 'পেন্ডিং').length;
-      
-      const approvedList = window.globalPlayers.filter(p => p.status === 'অনুমোদিত');
-      document.getElementById('stat-approved').innerText = approvedList.length;
-      
-      const totalAmount = approvedList.reduce((sum, p) => sum + parseInt(p.feeAmount || 0), 0);
-      document.getElementById('stat-amount').innerText = `৳ ${totalAmount}`;
+      $("stat-total").textContent = all.length;
+      $("stat-pending").textContent = all.filter(p => p.status === "পেন্ডিং").length;
 
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>`;
+      const approved = all.filter(p => p.status === "অনুমোদিত");
+      $("stat-approved").textContent = approved.length;
+
+      $("stat-amount").textContent = "৳ " +
+        approved.reduce((sum, p) => sum + numeric(p.feeAmount), 0).toLocaleString("en-US");
+
+      if (!filtered.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
         return;
       }
 
-      tbody.innerHTML = filtered.map(p => `
-        <tr class="hover:bg-slate-750">
-          <td class="p-3">
-            <p class="font-mono font-bold text-emerald-400">${p.id}</p>
-            <p class="text-[10px] text-slate-400">${p.playerType}</p>
-          </td>
-          <td class="p-3">
-            <p class="font-bold text-white">${p.fullname}</p>
-            <p class="text-[10px] text-slate-400">মোবাইল: ${p.mobile}</p>
-          </td>
-          <td class="p-3">
-            <p class="text-slate-200">${p.role}</p>
-            <p class="text-[10px] text-slate-400">সাইজ: ${p.jerseysize} (${p.jerseyname})</p>
-          </td>
-          <td class="p-3 text-amber-300 font-medium">${p.prevteam}</td>
-          <td class="p-3 font-mono">
-            <p class="text-pink-400 font-bold">${p.trxid} (৳${p.feeAmount})</p>
-            <p class="text-[10px] text-slate-400">প্রেরক: ${p.senderphone}</p>
-          </td>
-          <td class="p-3">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.status === 'অনুমোদিত' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">
-              ${p.status}
-            </span>
-          </td>
-          <td class="p-3 text-right">
-            <div class="flex items-center justify-end gap-1.5">
-              ${p.status === 'পেন্ডিং' 
-                ? `<button onclick="changeStatus('${p.id}', 'অনুমোদিত')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] px-2.5 py-1 rounded transition">অনুমোদন</button>`
-                : `<button onclick="changeStatus('${p.id}', 'পেন্ডিং')" class="bg-slate-700 hover:bg-slate-600 text-slate-300 text-[11px] px-2.5 py-1 rounded transition">পেন্ডিং করুন</button>`
-              }
-              <button onclick="deletePlayer('${p.id}')" class="bg-rose-600/80 hover:bg-rose-600 text-white text-[11px] px-2 py-1 rounded transition">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
-    };
-
-    window.checkStatus = function() {
-      const q = document.getElementById('search-mobile').value.trim();
-      const p = window.globalPlayers.find(x => x.mobile === q || x.id === q);
-      if (!p) {
-        alert('এই নম্বরে কোনো আবেদন পাওয়া যায়নি।');
-        document.getElementById('status-result').classList.add('hidden');
-        return;
-      }
-      document.getElementById('card-regid').innerText = p.id;
-      document.getElementById('card-fullname').innerText = p.fullname;
-      document.getElementById('card-jerseyname').innerText = p.jerseyname;
-      document.getElementById('card-role').innerText = p.role;
-      document.getElementById('card-jerseysize').innerText = p.jerseysize;
-      document.getElementById('card-prevteam').innerText = p.prevteam;
-      document.getElementById('card-photo').src = p.photo;
-      
-      const badge = document.getElementById('card-status-badge');
-      if (p.status === 'অনুমোদিত') {
-        badge.innerText = 'অনুমোদিত (Approved)';
-        badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
-      } else {
-        badge.innerText = 'পেন্ডিং (অপেক্ষমাণ)';
-        badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
-      }
-      document.getElementById('status-result').classList.remove('hidden');
-    };
-
-    window.previewAndCompressImage = function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const r = new FileReader();
-      r.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const cvs = document.createElement('canvas');
-          const ctx = cvs.getContext('2d');
-          const maxW = 300;
-          const scale = maxW / img.width;
-          cvs.width = maxW; cvs.height = img.height * scale;
-          ctx.drawImage(img, 0, 0, cvs.width, cvs.height);
-          document.getElementById('photo-preview').src = cvs.toDataURL('image/jpeg', 0.6);
-        };
-        img.src = e.target.result;
-      };
-      r.readAsDataURL(file);
+      tbody.innerHTML = filtered.map(p => `<tr class="hover:bg-slate-750">
+        <td class="p-3">
+          <p class="font-mono font-bold text-emerald-400">${safe(p.id)}</p>
+          <p class="text-[10px] text-slate-400">${safe(p.playerType)}</p>
+        </td>
+        <td class="p-3">
+          <p class="font-bold text-white">${safe(p.fullname)}</p>
+          <p class="text-[10px] text-slate-400">মোবাইল: ${safe(p.mobile)}</p>
+          <p class="text-[10px] text-slate-400">অভিভাবক: ${safe(p.guardian)}</p>
+          <p class="text-[10px] text-slate-400">ঠিকানা: ${safe(p.address)}</p>
+        </td>
+        <td class="p-3">
+          <p>${safe(p.role)}</p>
+          <p class="text-[10px] text-slate-400">${safe(p.jerseysize)} (${safe(p.jerseyname)})</p>
+        </td>
+        <td class="p-3 text-amber-300">${safe(p.prevteam)}</td>
+        <td class="p-3 font-mono">
+          <p class="text-pink-400 font-bold">${safe(p.trxid)} (৳${safe(p.feeAmount)})</p>
+          <p class="text-[10px] text-slate-400">প্রেরক: ${safe(p.senderphone)}</p>
+        </td>
+        <td class="p-3">${safe(p.status)}</td>
+        <td class="p-3 text-right">
+          <div class="flex items-center justify-end gap-1.5">
+            ${p.status === "পেন্ডিং"
+              ? `<button onclick="changeStatus('${safe(p.id)}','অনুমোদিত')" class="bg-emerald-600 text-white text-[11px] px-2.5 py-1 rounded">অনুমোদন</button>`
+              : `<button onclick="changeStatus('${safe(p.id)}','পেন্ডিং')" class="bg-slate-700 text-slate-200 text-[11px] px-2.5 py-1 rounded">পেন্ডিং করুন</button>`}
+            <button onclick="deletePlayer('${safe(p.id)}')" class="bg-rose-600 text-white text-[11px] px-2 py-1 rounded">মুছুন</button>
+          </div>
+        </td>
+      </tr>`).join("");
     };
 
     window.switchTab = function(t) {
-      ['register', 'status', 'admin'].forEach(x => document.getElementById(`tab-${x}`).classList.add('hidden'));
-      document.getElementById(`tab-${t}`).classList.remove('hidden');
+      ["register", "status", "admin"].forEach(x =>
+        $("tab-" + x).classList.add("hidden")
+      );
+      $("tab-" + t).classList.remove("hidden");
     };
 
     window.switchAdminTab = function(t) {
-      ['players', 'settings'].forEach(x => document.getElementById(`adm-sec-${x}`).classList.add('hidden'));
-      document.getElementById(`adm-sec-${t}`).classList.remove('hidden');
+      ["players", "settings"].forEach(x =>
+        $("adm-sec-" + x).classList.add("hidden")
+      );
+      $("adm-sec-" + t).classList.remove("hidden");
     };
 
-    window.copyNum = function(id) {
-      const text = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(text);
-      alert('নম্বর কপি হয়েছে: ' + text);
+    window.copyNum = async function(id) {
+      const text = $(id).textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert("নম্বর কপি হয়েছে: " + text);
+      } catch {
+        alert("কপি করা যায়নি। নম্বরটি হাতে কপি করুন: " + text);
+      }
     };
 
-    window.unlockAdmin = function() {
-      if (document.getElementById('admin-passcode').value === 'vpl2026') {
-        document.getElementById('admin-login-box').classList.add('hidden');
-        document.getElementById('admin-panel').classList.remove('hidden');
-        renderAdminTable();
-      } else alert('ভুল পাসকোড!');
+    window.saveSettings = async function() {
+      const btn = $("save-settings-btn");
+      btn.disabled = true;
+
+      try {
+        const updated = {
+          bkashNumber: $("set-bkash").value.trim(),
+          nagadNumber: $("set-nagad").value.trim(),
+          feeNew: $("set-fee-new").value.trim(),
+          feeOld: $("set-fee-old").value.trim(),
+          deadline: $("set-deadline").value.trim()
+        };
+
+        if (Object.values(updated).some(v => !v)) {
+          throw new Error("সব সেটিংস পূরণ করুন।");
+        }
+
+        await setDoc(doc(db, "vpl_system", "settings"), updated);
+        window.globalConfig = updated;
+        applyConfigUI();
+        alert("সেটিংস সংরক্ষণ হয়েছে।");
+
+      } catch (err) {
+        alert("সেটিংস সংরক্ষণ হয়নি: " + err.message);
+      } finally {
+        btn.disabled = false;
+      }
     };
+
+    async function adminLogin() {
+      const email = $("admin-email").value.trim();
+      const password = $("admin-passcode").value;
+
+      if (ADMIN_EMAIL.startsWith("CHANGE_")) {
+        alert("HTML কোডে ADMIN_EMAIL-এ Firebase Authentication-এর Admin email বসান।");
+        return;
+      }
+
+      if (email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+        alert("Admin email সঠিক নয়।");
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (err) {
+        alert("Login হয়নি: " + err.code +
+          " — Firebase Authentication-এ Email/Password চালু আছে কি না দেখুন।");
+      }
+    }
+
+    window.unlockAdmin = adminLogin;
+
+    window.adminLogout = async () => {
+      try {
+        await signOut(auth);
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    onAuthStateChanged(auth, user => {
+      const allowed = !!user &&
+        user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+      if (allowed) {
+        $("admin-login-box").classList.add("hidden");
+        $("admin-panel").classList.remove("hidden");
+        $("admin-auth-email").textContent = user.email;
+
+        if (adminUnsubscribe) adminUnsubscribe();
+
+        adminUnsubscribe = onSnapshot(
+          collection(db, "vpl_registrations"),
+          snap => {
+            window.globalPlayers = snap.docs
+              .map(d => d.data())
+              .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            window.renderAdminTable();
+          },
+          err => alert("Admin data load হয়নি: " + err.message +
+            ". Firestore Rules পরীক্ষা করুন।")
+        );
+
+        getDoc(doc(db, "vpl_system", "settings")).then(s => {
+          const c = s.exists()
+            ? { ...DEFAULT_CONFIG, ...s.data() }
+            : DEFAULT_CONFIG;
+
+          $("set-bkash").value = c.bkashNumber;
+          $("set-nagad").value = c.nagadNumber;
+          $("set-fee-new").value = c.feeNew;
+          $("set-fee-old").value = c.feeOld;
+          $("set-deadline").value = c.deadline;
+        }).catch(err => console.error(err));
+
+      } else {
+        if (adminUnsubscribe) {
+          adminUnsubscribe();
+          adminUnsubscribe = null;
+        }
+
+        $("admin-panel").classList.add("hidden");
+        $("admin-login-box").classList.remove("hidden");
+      }
+    });
+
+    $("admin-passcode").addEventListener("keydown", e => {
+      if (e.key === "Enter") adminLogin();
+    });
+
+    $("admin-email").value =
+      ADMIN_EMAIL.startsWith("CHANGE_") ? "" : ADMIN_EMAIL;
+
+    loadSettings().catch(err => {
+      console.error("Firebase init/settings failed:", err);
+      alert("Firebase সংযোগ/Settings Error: " + err.message +
+        ". Project config ও Firestore Rules পরীক্ষা করুন।");
+    });
   </script>
 </body>
 </html>
