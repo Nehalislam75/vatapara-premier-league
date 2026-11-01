@@ -296,6 +296,7 @@
                 <thead class="bg-slate-900 text-slate-400 font-semibold uppercase border-b border-slate-700">
                   <tr>
                     <th class="p-3">আইডি ও ধরন</th>
+                    <th class="p-3">ছবি</th>
                     <th class="p-3">খেলোয়াড়ের তথ্য</th>
                     <th class="p-3">রোল ও জার্সি</th>
                     <th class="p-3">পূর্ববর্তী দল</th>
@@ -305,7 +306,7 @@
                   </tr>
                 </thead>
                 <tbody id="admin-table-body" class="divide-y divide-slate-700">
-                  <tr><td colspan="7" class="p-6 text-center text-slate-500">ডেটা লোড হচ্ছে...</td></tr>
+                  <tr><td colspan="8" class="p-6 text-center text-slate-500">ডেটা লোড হচ্ছে...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -639,7 +640,7 @@
         approved.reduce((sum, p) => sum + numeric(p.feeAmount), 0).toLocaleString("en-US");
 
       if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
         return;
       }
 
@@ -648,6 +649,11 @@
           <p class="font-mono font-bold text-emerald-400">${safe(p.id)}</p>
           <p class="text-[10px] text-slate-400">${safe(p.playerType)}</p>
         </td>
+        <td class="p-3">
+         <img src="${safe(p.photo || '')}"
+         alt="Player"
+         class="w-14 h-14 object-cover rounded-lg border border-slate-600">
+       </td>
         <td class="p-3">
           <p class="font-bold text-white">${safe(p.fullname)}</p>
           <p class="text-[10px] text-slate-400">মোবাইল: ${safe(p.mobile)}</p>
