@@ -313,6 +313,7 @@
                     <th class="p-3">ছবি</th>
                     <th class="p-3">খেলোয়াড়ের তথ্য</th>
                     <th class="p-3">রোল ও জার্সি</th>
+                    <th class="p-3">জার্সি নম্বর</th>
                     <th class="p-3">পূর্ববর্তী দল</th>
                     <th class="p-3">পেমেন্ট (TrxID)</th>
                     <th class="p-3">স্ট্যাটাস</th>
@@ -320,7 +321,7 @@
                   </tr>
                 </thead>
                 <tbody id="admin-table-body" class="divide-y divide-slate-700">
-                  <tr><td colspan="8" class="p-6 text-center text-slate-500">ডেটা লোড হচ্ছে...</td></tr>
+                  <tr><td colspan="9" class="p-6 text-center text-slate-500">ডেটা লোড হচ্ছে...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -514,6 +515,7 @@
           playerType,
           fullname: $("p-fullname").value.trim(),
           jerseyname: $("p-jerseyname").value.trim(),
+          jerseyNumber: Number($("jersey-number").value),
           guardian: $("p-guardian").value.trim(),
           mobile: $("p-mobile").value.trim(),
           nid: $("p-nid").value.trim(),
@@ -537,6 +539,7 @@
           id,
           fullname: player.fullname,
           jerseyname: player.jerseyname,
+          jerseyNumber: player.jerseyNumber,
           role: player.role,
           jerseysize: player.jerseysize,
           prevteam: player.prevteam,
@@ -690,7 +693,7 @@
         approved.reduce((sum, p) => sum + numeric(p.feeAmount), 0).toLocaleString("en-US");
 
       if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>';
         return;
       }
 
@@ -713,6 +716,11 @@
         <td class="p-3">
           <p>${safe(p.role)}</p>
           <p class="text-[10px] text-slate-400">${safe(p.jerseysize)} (${safe(p.jerseyname)})</p>
+        </td>
+        <td class="p-3 text-center">
+          <span class="font-bold text-emerald-400">
+            ${safe(p.jerseyNumber ?? "-")}
+             </span>
         </td>
         <td class="p-3 text-amber-300">${safe(p.prevteam)}</td>
         <td class="p-3 font-mono">
