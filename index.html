@@ -11,22 +11,11 @@
   <!-- Google Fonts (Bangla) -->
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Hind Siliguri', sans-serif;
-    }
+    body { font-family: 'Hind Siliguri', sans-serif; }
     @media print {
-      body * {
-        visibility: hidden;
-      }
-      #printable-id-card, #printable-id-card * {
-        visibility: visible;
-      }
-      #printable-id-card {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
+      body * { visibility: hidden; }
+      #printable-id-card, #printable-id-card * { visibility: visible; }
+      #printable-id-card { position: absolute; left: 0; top: 0; width: 100%; }
     }
   </style>
 </head>
@@ -56,22 +45,26 @@
       <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider">ভাটাপাড়া প্রিমিয়ার লিগ ২০২৬</span>
       <h2 class="text-2xl md:text-4xl font-extrabold text-white">অনলাইন প্লেয়ার রেজিস্ট্রেশন চলছে!</h2>
       <p class="text-slate-300 text-sm md:text-base max-w-2xl mx-auto">
-        টুর্নামেন্টে অংশগ্রহণের জন্য নিচের ফর্মটি সঠিকভাবে পূরণ করুন এবং প্লেয়ারের ধরন অনুযায়ী নির্ধারিত ফি প্রদান করুন।
+        টুর্নামেন্টে অংশগ্রহণের জন্য নিচের ফর্মটি সঠিকভাবে পূরণ করুন এবং নির্ধারিত বিকাশ বা নগদ নম্বরে রেজিস্ট্রেশন ফি প্রদান করুন।
       </p>
       
       <!-- Dynamic Info Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 max-w-2xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 max-w-3xl mx-auto">
         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
           <p class="text-xs text-slate-400">নতুন প্লেয়ার ফি</p>
-          <p id="banner-fee-new" class="text-lg font-bold text-emerald-400">৳ ২০০০ টাকা</p>
+          <p id="banner-fee-new" class="text-lg font-bold text-emerald-400">৳ ২০০০</p>
         </div>
         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
           <p class="text-xs text-slate-400">পুরাতন প্লেয়ার ফি</p>
-          <p id="banner-fee-old" class="text-lg font-bold text-cyan-400">৳ ১২০০ টাকা</p>
+          <p id="banner-fee-old" class="text-lg font-bold text-emerald-400">৳ ১২০০</p>
         </div>
         <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
           <p class="text-xs text-slate-400">শেষ তারিখ</p>
           <p id="banner-deadline" class="text-lg font-bold text-amber-400">১৫ মে, ২০২৬</p>
+        </div>
+        <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+          <p class="text-xs text-slate-400">পেমেন্ট মেথড</p>
+          <p class="text-lg font-bold text-pink-400">বিকাশ / নগদ</p>
         </div>
       </div>
     </div>
@@ -93,13 +86,12 @@
         <form id="reg-form" class="space-y-5" onsubmit="handleFormSubmit(event)">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             
-            <!-- Player Type Selection (Dynamic Fee) -->
-            <div class="md:col-span-2 bg-slate-900/80 p-4 rounded-xl border border-emerald-500/40">
-              <label class="block text-sm font-bold text-emerald-400 mb-1">প্লেয়ারের ধরন নির্বাচন করুন <span class="text-red-400">*</span></label>
-              <select id="p-playertype" required onchange="updateFeeDisplay()" class="w-full bg-slate-800 border border-emerald-500/60 rounded-lg px-4 py-3 text-slate-100 font-semibold focus:outline-none focus:border-emerald-400 text-base">
-                <option value="">-- প্লেয়ারের ধরন বেছে নিন --</option>
-                <option value="নতুন প্লেয়ার">নতুন প্লেয়ার (রেজিস্ট্রেশন ফি: ২০০০ টাকা)</option>
-                <option value="পুরাতন প্লেয়ার">পুরাতন প্লেয়ার (রেজিস্ট্রেশন ফি: ১২০০ টাকা)</option>
+            <!-- Player Type (New / Old) -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-slate-300 mb-1">প্লেয়ারের ধরন <span class="text-red-400">*</span></label>
+              <select id="p-playertype" required onchange="updateFeeDisplay()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-emerald-300 font-bold focus:outline-none focus:border-emerald-500">
+                <option value="নতুন প্লেয়ার">নতুন প্লেয়ার (New Player)</option>
+                <option value="পুরাতন প্লেয়ার">পুরাতন প্লেয়ার (Old Player)</option>
               </select>
             </div>
 
@@ -127,22 +119,16 @@
               <input type="tel" id="p-mobile" required placeholder="017XXXXXXXX" pattern="[0-9]{11}" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
 
-            <!-- WhatsApp Number -->
-            <div>
-              <label class="block text-sm font-medium text-slate-300 mb-1">হোয়াটসঅ্যাপ নম্বর <span class="text-red-400">*</span></label>
-              <input type="tel" id="p-whatsapp" required placeholder="017XXXXXXXX" pattern="[0-9]{11}" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
-            </div>
-
             <!-- NID/Birth Certificate (OPTIONAL) -->
             <div>
-              <label class="block text-sm font-medium text-slate-300 mb-1">এনআইডি / জন্ম নিবন্ধন নম্বর <span class="text-slate-500 text-xs">(ঐচ্ছিক)</span></label>
-              <input type="text" id="p-nid" placeholder="NID বা জন্ম নিবন্ধন নম্বর (যদি থাকে)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
+              <label class="block text-sm font-medium text-slate-300 mb-1">এনআইডি / জন্ম নিবন্ধন <span class="text-slate-500 text-xs">(ঐচ্ছিক)</span></label>
+              <input type="text" id="p-nid" placeholder="NID বা জন্ম নিবন্ধন নম্বর" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
 
             <!-- Address / Village -->
-            <div class="md:col-span-2">
+            <div>
               <label class="block text-sm font-medium text-slate-300 mb-1">ঠিকানা / গ্রাম / পাড়া <span class="text-red-400">*</span></label>
-              <input type="text" id="p-address" required placeholder="যেমন: ভাটাপাড়া, ওয়ার্ড নং ০৬, রাজশাহী" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
+              <input type="text" id="p-address" required placeholder="যেমন: ভাটাপাড়া, ওয়ার্ড নং ০৬" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
             </div>
 
             <!-- Previous Team Name (MANDATORY) -->
@@ -160,31 +146,6 @@
                 <option value="ব্যাটসম্যান">ব্যাটসম্যান (Batsman)</option>
                 <option value="ফাস্ট বোলার">ফাস্ট বোলার (Fast Bowler)</option>
                 <option value="স্পিন বোলার">স্পিন বোলার (Spin Bowler)</option>
-                <option value="উইকেটরক্ষক ব্যাটসম্যান">উইকেটরক্ষক ব্যাটসম্যান (WK-Batsman)</option>
-              </select>
-            </div>
-
-            <!-- Batting Style -->
-            <div>
-              <label class="block text-sm font-medium text-slate-300 mb-1">ব্যাটিং স্টাইল <span class="text-red-400">*</span></label>
-              <select id="p-batting" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
-                <option value="">ব্যাটিং স্টাইল নির্বাচন করুন</option>
-                <option value="ডানহাতি ব্যাটসম্যান">ডানহাতি (Right-Handed)</option>
-                <option value="বামহাতি ব্যাটসম্যান">বামহাতি (Left-Handed)</option>
-              </select>
-            </div>
-
-            <!-- Bowling Style -->
-            <div>
-              <label class="block text-sm font-medium text-slate-300 mb-1">বোলিং স্টাইল <span class="text-red-400">*</span></label>
-              <select id="p-bowling" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
-                <option value="">বোলিং স্টাইল নির্বাচন করুন</option>
-                <option value="ডানহাতি পেস">ডানহাতি পেস (Right-Arm Fast/Medium)</option>
-                <option value="ডানহাতি অফ-স্পিন">ডানহাতি অফ-স্পিন (Right-Arm Off-Spin)</option>
-                <option value="ডানহাতি লেগ-স্পিন">ডানহাতি লেগ-স্পিন (Right-Arm Leg-Spin)</option>
-                <option value="বামহাতি পেস">বামহাতি পেস (Left-Arm Fast/Medium)</option>
-                <option value="বামহাতি স্পিন">বামহাতি স্পিন (Left-Arm Spin)</option>
-                <option value="বোলিং করি না">বোলিং করি না (None)</option>
               </select>
             </div>
 
@@ -214,14 +175,14 @@
 
           </div>
 
-          <!-- Payment Details Box (Dynamic Fee Update) -->
+          <!-- Payment Details Box -->
           <div class="bg-slate-900/90 border border-emerald-800/60 p-5 rounded-xl space-y-4 mt-6">
             <h4 class="text-base font-bold text-emerald-400 flex items-center gap-2">
               <i class="fa-solid fa-wallet"></i> ফি প্রদানের নির্দেশিকা (বিকাশ / নগদ)
             </h4>
             
             <p class="text-xs text-slate-300 leading-relaxed">
-              আপনার প্লেয়ার ক্যাটাগরি অনুযায়ী প্রদেয় ফি: <span id="payment-fee-text" class="text-emerald-400 font-bold text-sm bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">প্লেয়ার টাইপ সিলেক্ট করুন</span>। নিচের যেকোনো একটি নম্বরে <b>Send Money</b> বা <b>Cash In</b> করে ট্রানজেকশন আইডি (TrxID) দিন।
+              নিচের যেকোনো একটি নম্বরে <span id="payment-fee-text" class="text-emerald-400 font-bold text-lg bg-emerald-900/50 px-2 py-0.5 rounded">৳ ২০০০ টাকা</span> <b>Send Money</b> বা <b>Cash In</b> করে নিচে ট্রানজেকশন আইডি (TrxID) এবং যে নম্বর থেকে টাকা পাঠিয়েছেন তা লিখুন।
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -281,54 +242,39 @@
 
       <!-- Result Container -->
       <div id="status-result" class="hidden max-w-md mx-auto">
-        <!-- Printable ID Card Structure -->
         <div id="printable-id-card" class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 border-2 border-emerald-500/50 rounded-2xl p-6 shadow-2xl relative overflow-hidden space-y-4">
-          
-          <!-- Card Header -->
           <div class="text-center border-b border-slate-700 pb-3">
             <span class="bg-emerald-500 text-slate-950 font-bold text-xs px-2.5 py-0.5 rounded-full uppercase">অফিশিয়াল প্লেয়ার কার্ড</span>
             <h4 class="text-xl font-black text-white mt-1">ভাটাপাড়া প্রিমিয়ার লিগ</h4>
             <p id="card-regid" class="text-xs font-mono text-emerald-400 font-semibold mt-0.5">ভিপিএল-২০২৬-০০০১</p>
           </div>
-
-          <!-- Card Body -->
           <div class="flex items-center gap-4">
             <img id="card-photo" src="https://via.placeholder.com/150" alt="Player Photo" class="w-24 h-28 object-cover rounded-xl border-2 border-emerald-500 shadow-md">
             <div class="space-y-1.5 text-left flex-grow">
               <div>
                 <p class="text-[10px] text-slate-400 uppercase">খেলোয়াড়ের নাম</p>
-                <p id="card-fullname" class="text-base font-bold text-white leading-tight">মো: রাশেদুল ইসলাম</p>
+                <p id="card-fullname" class="text-base font-bold text-white leading-tight">নাম</p>
               </div>
-              <div class="grid grid-cols-2 gap-1 text-[11px]">
-                <div>
-                  <p class="text-[10px] text-slate-400 uppercase">জার্সির নাম</p>
-                  <p id="card-jerseyname" class="text-sm font-bold text-emerald-300">RASHEL</p>
-                </div>
-                <div>
-                  <p class="text-[10px] text-slate-400 uppercase">টাইপ & ফি</p>
-                  <p id="card-typefee" class="text-xs font-bold text-cyan-300">নতুন (৳২০০০)</p>
-                </div>
+              <div>
+                <p class="text-[10px] text-slate-400 uppercase">জার্সির নাম</p>
+                <p id="card-jerseyname" class="text-sm font-bold text-emerald-300">নাম</p>
               </div>
               <div class="grid grid-cols-2 gap-1 text-[11px]">
                 <div>
                   <span class="text-slate-400">রোল:</span>
-                  <span id="card-role" class="text-slate-200 font-medium">অলরাউন্ডার</span>
+                  <span id="card-role" class="text-slate-200 font-medium">-</span>
                 </div>
                 <div>
                   <span class="text-slate-400">সাইজ:</span>
-                  <span id="card-jerseysize" class="text-slate-200 font-medium">L</span>
+                  <span id="card-jerseysize" class="text-slate-200 font-medium">-</span>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Team Info -->
           <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-700/80 text-xs flex justify-between items-center">
             <span class="text-slate-400">পূর্ববর্তী দল:</span>
-            <span id="card-prevteam" class="text-amber-300 font-semibold">ভাটাপাড়া ফাইটার্স</span>
+            <span id="card-prevteam" class="text-amber-300 font-semibold">-</span>
           </div>
-
-          <!-- Card Footer & Verification Stamp -->
           <div class="flex justify-between items-center pt-2 border-t border-slate-700/80">
             <div id="card-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
               পেন্ডিং (অপেক্ষমাণ)
@@ -358,8 +304,6 @@
 
       <!-- Protected Admin Panel -->
       <div id="admin-panel" class="hidden space-y-6">
-        
-        <!-- Admin Navigation Tabs -->
         <div class="flex border-b border-slate-700">
           <button onclick="switchAdminTab('players')" id="adm-tab-btn-players" class="px-4 py-2 font-medium text-emerald-400 border-b-2 border-emerald-400 text-sm">নিবন্ধিত প্লেয়ার তালিকা</button>
           <button onclick="switchAdminTab('settings')" id="adm-tab-btn-settings" class="px-4 py-2 font-medium text-slate-400 hover:text-slate-200 text-sm">টুর্নামেন্ট সেটিংস</button>
@@ -367,7 +311,6 @@
 
         <!-- Section A: Players List -->
         <div id="adm-sec-players" class="space-y-4">
-          <!-- Overview Stats -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
               <p class="text-xs text-slate-400">মোট আবেদন</p>
@@ -382,12 +325,11 @@
               <p id="stat-approved" class="text-xl font-bold text-emerald-400">০</p>
             </div>
             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-              <p class="text-xs text-slate-400">মোট সংগৃহীত ফি</p>
+              <p class="text-xs text-slate-400">মোট সংগ্রহ</p>
               <p id="stat-amount" class="text-xl font-bold text-pink-400">৳ ০</p>
             </div>
           </div>
 
-          <!-- Table & Filter -->
           <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl">
             <div class="p-4 border-b border-slate-700 flex flex-col sm:flex-row justify-between gap-3">
               <input type="text" id="admin-search" oninput="renderAdminTable()" placeholder="নাম, নম্বর বা TrxID দিয়ে খুঁজুন..." class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 w-full sm:w-64">
@@ -399,15 +341,12 @@
                 </select>
               </div>
             </div>
-
-            <!-- Table -->
             <div class="overflow-x-auto">
               <table class="w-full text-left text-xs text-slate-300">
                 <thead class="bg-slate-900 text-slate-400 font-semibold uppercase border-b border-slate-700">
                   <tr>
-                    <th class="p-3">আইডি ও তারিখ</th>
+                    <th class="p-3">আইডি ও ধরন</th>
                     <th class="p-3">খেলোয়াড়ের তথ্য</th>
-                    <th class="p-3">টাইপ & ফি</th>
                     <th class="p-3">রোল ও জার্সি</th>
                     <th class="p-3">পূর্ববর্তী দল</th>
                     <th class="p-3">পেমেন্ট (TrxID)</th>
@@ -416,9 +355,7 @@
                   </tr>
                 </thead>
                 <tbody id="admin-table-body" class="divide-y divide-slate-700/60">
-                  <tr>
-                    <td colspan="8" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td>
-                  </tr>
+                  <tr><td colspan="7" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>
                 </tbody>
               </table>
             </div>
@@ -429,172 +366,186 @@
         <div id="adm-sec-settings" class="hidden space-y-4">
           <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl max-w-xl mx-auto space-y-4">
             <h4 class="text-base font-bold text-white border-b border-slate-700 pb-2">
-              <i class="fa-solid fa-sliders text-emerald-400"></i> টুর্নামেন্ট ও পেমেন্ট নম্বর সেটিংস
+              <i class="fa-solid fa-sliders text-emerald-400"></i> টুর্নামেন্ট সেটিংস
             </h4>
-
             <div>
               <label class="block text-xs font-medium text-slate-300 mb-1">বিকাশ পার্সোনাল নম্বর</label>
               <input type="text" id="set-bkash" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
             </div>
-
             <div>
               <label class="block text-xs font-medium text-slate-300 mb-1">নগদ পার্সোনাল নম্বর</label>
               <input type="text" id="set-nagad" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
             </div>
-
-            <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">নতুন প্লেয়ার ফি (টাকা)</label>
-              <input type="text" id="set-fee-new" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">নতুন প্লেয়ার ফি</label>
+                <input type="text" id="set-fee-new" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">পুরাতন প্লেয়ার ফি</label>
+                <input type="text" id="set-fee-old" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+              </div>
             </div>
-
-            <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">পুরাতন প্লেয়ার ফি (টাকা)</label>
-              <input type="text" id="set-fee-old" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
-            </div>
-
             <div>
               <label class="block text-xs font-medium text-slate-300 mb-1">নিবন্ধনের শেষ তারিখ</label>
               <input type="text" id="set-deadline" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
             </div>
-
-            <button onclick="saveSettings()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg transition">
+            <button onclick="saveSettings()" id="save-settings-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg transition">
               সেটিংস সংরক্ষণ করুন
             </button>
           </div>
         </div>
-
       </div>
     </div>
-
   </main>
 
-  <!-- Footer -->
   <footer class="bg-slate-950 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
     <p>© ২০২৬ ভাটাপাড়া প্রিমিয়ার লিগ (ভিপিএল)। সর্বস্বত্ব সংরক্ষিত।</p>
   </footer>
 
-  <!-- App JavaScript Logic -->
-  <script>
-    // Local Default Storage Data
-    let localRegistrations = JSON.parse(localStorage.getItem('vpl_regs') || '[]');
-    let localConfig = JSON.parse(localStorage.getItem('vpl_config') || JSON.stringify({
-      bkashNumber: '01700-000000',
-      nagadNumber: '01800-000000',
-      feeNew: '২০০০',
-      feeOld: '১২০০',
-      deadline: '১৫ মে, ২০২৬'
-    }));
+  <!-- Firebase Scripts (Real-time Cloud Sync) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, doc, setDoc, deleteDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // Initialize UI on Load
+    // ==========================================
+    // ⚠️ আপনার ফায়ারবেজ কনফিগ এখানে বসান ⚠️
+    // ==========================================
+    const firebaseConfig = {
+      // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBmwCjimzhzbr_1SFX-F_0r5elHt6R-6Zw",
+  authDomain: "vatapara-premier-league.firebaseapp.com",
+  projectId: "vatapara-premier-league",
+  storageBucket: "vatapara-premier-league.firebasestorage.app",
+  messagingSenderId: "739598587366",
+  appId: "1:739598587366:web:4baaecddfff3f0c620f227",
+  measurementId: "G-LVRCC72HTJ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+    };
+
+    let db;
+    let isCloudActive = false;
+
+    // Local Variables
+    window.globalPlayers = [];
+    window.globalConfig = {
+      bkashNumber: '01762038988',
+      nagadNumber: '01762038988',
+      feeNew: '২০০০',
+      feeOld: '১২৫০',
+      deadline: '১০ নভেম্বর, ২০২৬'
+    };
+
+    try {
+      if(firebaseConfig.apiKey !== "YOUR_API_KEY") {
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        isCloudActive = true;
+        
+        // Listen to Settings Live
+        onSnapshot(doc(db, "vpl_system", "settings"), (docSnap) => {
+          if (docSnap.exists()) {
+            window.globalConfig = docSnap.data();
+            applyConfigUI();
+          }
+        });
+
+        // Listen to Registrations Live
+        onSnapshot(collection(db, "vpl_registrations"), (snapshot) => {
+          window.globalPlayers = [];
+          snapshot.forEach((doc) => window.globalPlayers.push(doc.data()));
+          window.globalPlayers.sort((a, b) => b.timestamp - a.timestamp); // newest first
+          renderAdminTable();
+        });
+      }
+    } catch(e) {
+      console.warn("Firebase not properly configured. Running in local mode.");
+    }
+
+    // Default Fallback Initializer
     window.addEventListener('DOMContentLoaded', () => {
       applyConfigUI();
-      renderAdminTable();
+      updateFeeDisplay();
     });
 
-    function applyConfigUI() {
-      document.getElementById('banner-fee-new').innerText = `৳ ${localConfig.feeNew} টাকা`;
-      document.getElementById('banner-fee-old').innerText = `৳ ${localConfig.feeOld} টাকা`;
-      document.getElementById('banner-deadline').innerText = localConfig.deadline;
-      document.getElementById('bkash-num-display').innerText = localConfig.bkashNumber;
-      document.getElementById('nagad-num-display').innerText = localConfig.nagadNumber;
+    window.applyConfigUI = function() {
+      document.getElementById('banner-fee-new').innerText = `৳ ${window.globalConfig.feeNew}`;
+      document.getElementById('banner-fee-old').innerText = `৳ ${window.globalConfig.feeOld}`;
+      document.getElementById('banner-deadline').innerText = window.globalConfig.deadline;
+      document.getElementById('bkash-num-display').innerText = window.globalConfig.bkashNumber;
+      document.getElementById('nagad-num-display').innerText = window.globalConfig.nagadNumber;
       
-      document.getElementById('set-bkash').value = localConfig.bkashNumber;
-      document.getElementById('set-nagad').value = localConfig.nagadNumber;
-      document.getElementById('set-fee-new').value = localConfig.feeNew;
-      document.getElementById('set-fee-old').value = localConfig.feeOld;
-      document.getElementById('set-deadline').value = localConfig.deadline;
-      
+      document.getElementById('set-bkash').value = window.globalConfig.bkashNumber;
+      document.getElementById('set-nagad').value = window.globalConfig.nagadNumber;
+      document.getElementById('set-fee-new').value = window.globalConfig.feeNew;
+      document.getElementById('set-fee-old').value = window.globalConfig.feeOld;
+      document.getElementById('set-deadline').value = window.globalConfig.deadline;
       updateFeeDisplay();
-    }
+    };
 
-    // Dynamic Fee update based on Player Type
-    function updateFeeDisplay() {
-      const playerType = document.getElementById('p-playertype').value;
-      const feeText = document.getElementById('payment-fee-text');
+    window.updateFeeDisplay = function() {
+      const type = document.getElementById('p-playertype')?.value;
+      const amount = type === 'নতুন প্লেয়ার' ? window.globalConfig.feeNew : window.globalConfig.feeOld;
+      document.getElementById('payment-fee-text').innerText = `৳ ${amount} টাকা`;
+    };
+
+    window.saveSettings = async function() {
+      const btn = document.getElementById('save-settings-btn');
+      btn.innerText = "সংরক্ষণ হচ্ছে...";
       
-      if (playerType === 'নতুন প্লেয়ার') {
-        feeText.innerText = `৳ ${localConfig.feeNew || '২০০০'} টাকা (নতুন প্লেয়ার)`;
-        feeText.className = "text-emerald-400 font-bold text-sm bg-emerald-950 px-2.5 py-1 rounded border border-emerald-500/50";
-      } else if (playerType === 'পুরাতন প্লেয়ার') {
-        feeText.innerText = `৳ ${localConfig.feeOld || '১২০০'} টাকা (পুরাতন প্লেয়ার)`;
-        feeText.className = "text-cyan-300 font-bold text-sm bg-cyan-950 px-2.5 py-1 rounded border border-cyan-500/50";
-      } else {
-        feeText.innerText = `নতুন: ৳${localConfig.feeNew || '২০০০'} / পুরাতন: ৳${localConfig.feeOld || '১২০০'} টাকা`;
-        feeText.className = "text-amber-300 font-bold text-xs bg-slate-800 px-2 py-0.5 rounded border border-slate-700";
-      }
-    }
-
-    function switchTab(tab) {
-      document.getElementById('tab-register').classList.add('hidden');
-      document.getElementById('tab-status').classList.add('hidden');
-      document.getElementById('tab-admin').classList.add('hidden');
-
-      document.getElementById(`tab-${tab}`).classList.remove('hidden');
-    }
-
-    // Canvas Auto Image Compression (~30-50KB)
-    function previewAndCompressImage(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          
-          const maxWidth = 300;
-          const scale = maxWidth / img.width;
-          canvas.width = maxWidth;
-          canvas.height = img.height * scale;
-
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-          document.getElementById('photo-preview').src = compressedBase64;
-        };
-        img.src = e.target.result;
+      const updatedConfig = {
+        bkashNumber: document.getElementById('set-bkash').value,
+        nagadNumber: document.getElementById('set-nagad').value,
+        feeNew: document.getElementById('set-fee-new').value,
+        feeOld: document.getElementById('set-fee-old').value,
+        deadline: document.getElementById('set-deadline').value
       };
-      reader.readAsDataURL(file);
-    }
 
-    function copyNum(id) {
-      const text = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(text);
-      alert('নম্বর কপি হয়েছে: ' + text);
-    }
+      if (isCloudActive) {
+        await setDoc(doc(db, "vpl_system", "settings"), updatedConfig);
+      }
+      
+      window.globalConfig = updatedConfig;
+      applyConfigUI();
+      btn.innerText = "সেটিংস সংরক্ষণ করুন";
+      alert('সেটিংস সফলভাবে রিয়েল-টাইমে আপডেট হয়েছে!');
+    };
 
-    function handleFormSubmit(e) {
+    window.handleFormSubmit = async function(e) {
       e.preventDefault();
-
+      const btn = document.getElementById('submit-btn');
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> আপলোড হচ্ছে...`;
+      
       try {
-        const playerType = document.getElementById('p-playertype').value;
-        if (!playerType) {
-          alert('অনুগ্রহ করে প্লেয়ারের ধরন নির্বাচন করুন!');
-          return;
-        }
-
-        const feeAmount = (playerType === 'নতুন প্লেয়ার') ? parseInt(localConfig.feeNew || 2000) : parseInt(localConfig.feeOld || 1200);
         const photoSrc = document.getElementById('photo-preview').src;
         const regId = 'ভিপিএল-২০২৬-' + Math.floor(1000 + Math.random() * 9000);
+        const playerType = document.getElementById('p-playertype').value;
+        const feeAmount = playerType === 'নতুন প্লেয়ার' ? window.globalConfig.feeNew : window.globalConfig.feeOld;
 
         const newPlayer = {
           id: regId,
+          timestamp: Date.now(),
           date: new Date().toLocaleDateString('bn-BD'),
-          playertype: playerType,
-          fee: feeAmount,
+          playerType: playerType,
+          feeAmount: feeAmount,
           fullname: document.getElementById('p-fullname').value,
           jerseyname: document.getElementById('p-jerseyname').value,
-          guardian: document.getElementById('p-guardian').value,
           mobile: document.getElementById('p-mobile').value,
-          whatsapp: document.getElementById('p-whatsapp').value,
           nid: document.getElementById('p-nid').value || 'N/A',
-          address: document.getElementById('p-address').value,
           prevteam: document.getElementById('p-prevteam').value,
           role: document.getElementById('p-role').value,
-          batting: document.getElementById('p-batting').value,
-          bowling: document.getElementById('p-bowling').value,
           jerseysize: document.getElementById('p-jerseysize').value,
           senderphone: document.getElementById('p-senderphone').value,
           trxid: document.getElementById('p-trxid').value,
@@ -602,120 +553,80 @@
           status: 'পেন্ডিং'
         };
 
-        localRegistrations.unshift(newPlayer);
-        localStorage.setItem('vpl_regs', JSON.stringify(localRegistrations));
+        if (isCloudActive) {
+          await setDoc(doc(db, "vpl_registrations", regId), newPlayer);
+        } else {
+          window.globalPlayers.unshift(newPlayer); // Local fallback
+        }
 
-        alert(`অভিনন্দন! আপনার আবেদন সফলভাবে জমা হয়েছে।\nপ্লেয়ার ধরন: ${playerType}\nপ্রদেয় ফি: ৳ ${feeAmount} টাকা\nআইডি: ${regId}`);
-        
+        alert(`অভিনন্দন! আপনার আবেদন সফলভাবে জমা হয়েছে।\nআইডি: ${regId}`);
         document.getElementById('reg-form').reset();
         document.getElementById('photo-preview').src = 'https://via.placeholder.com/150/1e293b/94a3b8?text=Photo';
-        updateFeeDisplay();
         
-        // Auto open status check
         document.getElementById('search-mobile').value = newPlayer.mobile;
         switchTab('status');
         checkStatus();
-        renderAdminTable();
       } catch (err) {
-        alert('আবেদন জমা দিতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');
-        console.error(err);
+        alert('সমস্যা হয়েছে! ইন্টারনেট কানেকশন বা কনফিগ চেক করুন।');
       }
-    }
+      btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> নিবন্ধন সম্পন্ন করুন`;
+    };
 
-    function checkStatus() {
-      const query = document.getElementById('search-mobile').value.trim();
-      const player = localRegistrations.find(p => p.mobile === query || p.id === query);
-
-      if (!player) {
-        alert('এই নম্বরে কোনো আবেদন পাওয়া যায়নি।');
-        document.getElementById('status-result').classList.add('hidden');
-        return;
-      }
-
-      document.getElementById('card-regid').innerText = player.id;
-      document.getElementById('card-fullname').innerText = player.fullname;
-      document.getElementById('card-jerseyname').innerText = player.jerseyname;
-      document.getElementById('card-typefee').innerText = `${player.playertype || 'নতুন'} (৳${player.fee || 2000})`;
-      document.getElementById('card-role').innerText = player.role;
-      document.getElementById('card-jerseysize').innerText = player.jerseysize;
-      document.getElementById('card-prevteam').innerText = player.prevteam;
-      document.getElementById('card-photo').src = player.photo;
-
-      const badge = document.getElementById('card-status-badge');
-      if (player.status === 'অনুমোদিত') {
-        badge.innerText = 'অনুমোদিত (Approved)';
-        badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+    window.changeStatus = async function(id, newStatus) {
+      if (isCloudActive) {
+        await updateDoc(doc(db, "vpl_registrations", id), { status: newStatus });
       } else {
-        badge.innerText = 'পেন্ডিং (অপেক্ষমাণ)';
-        badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
-      }
-
-      document.getElementById('status-result').classList.remove('hidden');
-    }
-
-    function unlockAdmin() {
-      const pass = document.getElementById('admin-passcode').value;
-      if (pass === 'vpl2026') {
-        document.getElementById('admin-login-box').classList.add('hidden');
-        document.getElementById('admin-panel').classList.remove('hidden');
+        const p = window.globalPlayers.find(x => x.id === id);
+        if(p) p.status = newStatus;
         renderAdminTable();
-      } else {
-        alert('ভুল পাসকোড!');
       }
-    }
+    };
 
-    function switchAdminTab(subTab) {
-      document.getElementById('adm-sec-players').classList.add('hidden');
-      document.getElementById('adm-sec-settings').classList.add('hidden');
+    window.deletePlayer = async function(id) {
+      if (confirm('আপনি কি নিশ্চিত যে এই আবেদনটি চিরতরে মুছে ফেলতে চান?')) {
+        if (isCloudActive) {
+          await deleteDoc(doc(db, "vpl_registrations", id));
+        } else {
+          window.globalPlayers = window.globalPlayers.filter(x => x.id !== id);
+          renderAdminTable();
+        }
+      }
+    };
 
-      document.getElementById(`adm-sec-${subTab}`).classList.remove('hidden');
-    }
-
-    function renderAdminTable() {
+    window.renderAdminTable = function() {
       const tbody = document.getElementById('admin-table-body');
       const search = document.getElementById('admin-search')?.value.toLowerCase() || '';
       const filter = document.getElementById('admin-filter')?.value || 'ALL';
 
-      let filtered = localRegistrations.filter(p => {
-        const matchesSearch = p.fullname.toLowerCase().includes(search) || p.mobile.includes(search) || p.trxid.toLowerCase().includes(search);
-        const matchesFilter = filter === 'ALL' || p.status === filter;
-        return matchesSearch && matchesFilter;
+      let filtered = window.globalPlayers.filter(p => {
+        const matchSearch = p.fullname.toLowerCase().includes(search) || p.mobile.includes(search) || p.trxid.toLowerCase().includes(search);
+        const matchFilter = filter === 'ALL' || p.status === filter;
+        return matchSearch && matchFilter;
       });
 
-      // Stats Update: Dynamic revenue calculation based on player type fee
-      let totalApprovedRevenue = 0;
-      localRegistrations.filter(p => p.status === 'অনুমোদিত').forEach(p => {
-        const fee = p.fee ? parseInt(p.fee) : (p.playertype === 'পুরাতন প্লেয়ার' ? 1200 : 2000);
-        totalApprovedRevenue += fee;
-      });
-
-      document.getElementById('stat-total').innerText = localRegistrations.length;
-      document.getElementById('stat-pending').innerText = localRegistrations.filter(p => p.status === 'পেন্ডিং').length;
-      document.getElementById('stat-approved').innerText = localRegistrations.filter(p => p.status === 'অনুমোদিত').length;
-      document.getElementById('stat-amount').innerText = `৳ ${totalApprovedRevenue}`;
+      document.getElementById('stat-total').innerText = window.globalPlayers.length;
+      document.getElementById('stat-pending').innerText = window.globalPlayers.filter(p => p.status === 'পেন্ডিং').length;
+      
+      const approvedList = window.globalPlayers.filter(p => p.status === 'অনুমোদিত');
+      document.getElementById('stat-approved').innerText = approvedList.length;
+      
+      const totalAmount = approvedList.reduce((sum, p) => sum + parseInt(p.feeAmount || 0), 0);
+      document.getElementById('stat-amount').innerText = `৳ ${totalAmount}`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-500">কোনো তথ্য পাওয়া যায়নি।</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = filtered.map(p => {
-        const playerFee = p.fee ? p.fee : (p.playertype === 'পুরাতন প্লেয়ার' ? 1200 : 2000);
-        return `
+      tbody.innerHTML = filtered.map(p => `
         <tr class="hover:bg-slate-750">
           <td class="p-3">
             <p class="font-mono font-bold text-emerald-400">${p.id}</p>
-            <p class="text-[10px] text-slate-400">${p.date}</p>
+            <p class="text-[10px] text-slate-400">${p.playerType}</p>
           </td>
           <td class="p-3">
             <p class="font-bold text-white">${p.fullname}</p>
             <p class="text-[10px] text-slate-400">মোবাইল: ${p.mobile}</p>
-          </td>
-          <td class="p-3">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.playertype === 'পুরাতন প্লেয়ার' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'}">
-              ${p.playertype || 'নতুন'}
-            </span>
-            <p class="text-[11px] font-bold text-slate-200 mt-0.5">৳ ${playerFee}</p>
           </td>
           <td class="p-3">
             <p class="text-slate-200">${p.role}</p>
@@ -723,7 +634,7 @@
           </td>
           <td class="p-3 text-amber-300 font-medium">${p.prevteam}</td>
           <td class="p-3 font-mono">
-            <p class="text-pink-400 font-bold">${p.trxid}</p>
+            <p class="text-pink-400 font-bold">${p.trxid} (৳${p.feeAmount})</p>
             <p class="text-[10px] text-slate-400">প্রেরক: ${p.senderphone}</p>
           </td>
           <td class="p-3">
@@ -734,58 +645,88 @@
           <td class="p-3 text-right">
             <div class="flex items-center justify-end gap-1.5">
               ${p.status === 'পেন্ডিং' 
-                ? `<button onclick="approvePlayer('${p.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] px-2.5 py-1 rounded transition">অনুমোদন</button>`
-                : `<button onclick="rejectPlayer('${p.id}')" class="bg-slate-700 hover:bg-slate-600 text-slate-300 text-[11px] px-2.5 py-1 rounded transition">পেন্ডিং করুন</button>`
+                ? `<button onclick="changeStatus('${p.id}', 'অনুমোদিত')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] px-2.5 py-1 rounded transition">অনুমোদন</button>`
+                : `<button onclick="changeStatus('${p.id}', 'পেন্ডিং')" class="bg-slate-700 hover:bg-slate-600 text-slate-300 text-[11px] px-2.5 py-1 rounded transition">পেন্ডিং করুন</button>`
               }
-              <button onclick="deletePlayer('${p.id}')" class="bg-rose-600/80 hover:bg-rose-600 text-white text-[11px] px-2 py-1 rounded transition flex items-center gap-1" title="মুছে ফেলুন">
+              <button onclick="deletePlayer('${p.id}')" class="bg-rose-600/80 hover:bg-rose-600 text-white text-[11px] px-2 py-1 rounded transition">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </div>
           </td>
         </tr>
-      `}).join('');
-    }
+      `).join('');
+    };
 
-    function approvePlayer(id) {
-      const idx = localRegistrations.findIndex(p => p.id === id);
-      if (idx !== -1) {
-        localRegistrations[idx].status = 'অনুমোদিত';
-        localStorage.setItem('vpl_regs', JSON.stringify(localRegistrations));
-        renderAdminTable();
+    window.checkStatus = function() {
+      const q = document.getElementById('search-mobile').value.trim();
+      const p = window.globalPlayers.find(x => x.mobile === q || x.id === q);
+      if (!p) {
+        alert('এই নম্বরে কোনো আবেদন পাওয়া যায়নি।');
+        document.getElementById('status-result').classList.add('hidden');
+        return;
       }
-    }
-
-    function rejectPlayer(id) {
-      const idx = localRegistrations.findIndex(p => p.id === id);
-      if (idx !== -1) {
-        localRegistrations[idx].status = 'পেন্ডিং';
-        localStorage.setItem('vpl_regs', JSON.stringify(localRegistrations));
-        renderAdminTable();
+      document.getElementById('card-regid').innerText = p.id;
+      document.getElementById('card-fullname').innerText = p.fullname;
+      document.getElementById('card-jerseyname').innerText = p.jerseyname;
+      document.getElementById('card-role').innerText = p.role;
+      document.getElementById('card-jerseysize').innerText = p.jerseysize;
+      document.getElementById('card-prevteam').innerText = p.prevteam;
+      document.getElementById('card-photo').src = p.photo;
+      
+      const badge = document.getElementById('card-status-badge');
+      if (p.status === 'অনুমোদিত') {
+        badge.innerText = 'অনুমোদিত (Approved)';
+        badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+      } else {
+        badge.innerText = 'পেন্ডিং (অপেক্ষমাণ)';
+        badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
       }
-    }
+      document.getElementById('status-result').classList.remove('hidden');
+    };
 
-    // Permanent Delete Option for Admin
-    function deletePlayer(id) {
-      if (confirm('আপনি কি নিশ্চিত যে এই আবেদনটি চিরতরে মুছে ফেলতে চান? (এই সিদ্ধান্ত আর ফেরত নেওয়া যাবে না)')) {
-        localRegistrations = localRegistrations.filter(p => p.id !== id);
-        localStorage.setItem('vpl_regs', JSON.stringify(localRegistrations));
-        renderAdminTable();
-        alert('আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।');
-      }
-    }
-
-    function saveSettings() {
-      localConfig = {
-        bkashNumber: document.getElementById('set-bkash').value,
-        nagadNumber: document.getElementById('set-nagad').value,
-        feeNew: document.getElementById('set-fee-new').value,
-        feeOld: document.getElementById('set-fee-old').value,
-        deadline: document.getElementById('set-deadline').value
+    window.previewAndCompressImage = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const r = new FileReader();
+      r.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const cvs = document.createElement('canvas');
+          const ctx = cvs.getContext('2d');
+          const maxW = 300;
+          const scale = maxW / img.width;
+          cvs.width = maxW; cvs.height = img.height * scale;
+          ctx.drawImage(img, 0, 0, cvs.width, cvs.height);
+          document.getElementById('photo-preview').src = cvs.toDataURL('image/jpeg', 0.6);
+        };
+        img.src = e.target.result;
       };
-      localStorage.setItem('vpl_config', JSON.stringify(localConfig));
-      applyConfigUI();
-      alert('সেটিংস সফলভাবে সংরক্ষিত হয়েছে!');
-    }
+      r.readAsDataURL(file);
+    };
+
+    window.switchTab = function(t) {
+      ['register', 'status', 'admin'].forEach(x => document.getElementById(`tab-${x}`).classList.add('hidden'));
+      document.getElementById(`tab-${t}`).classList.remove('hidden');
+    };
+
+    window.switchAdminTab = function(t) {
+      ['players', 'settings'].forEach(x => document.getElementById(`adm-sec-${x}`).classList.add('hidden'));
+      document.getElementById(`adm-sec-${t}`).classList.remove('hidden');
+    };
+
+    window.copyNum = function(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text);
+      alert('নম্বর কপি হয়েছে: ' + text);
+    };
+
+    window.unlockAdmin = function() {
+      if (document.getElementById('admin-passcode').value === 'vpl2026') {
+        document.getElementById('admin-login-box').classList.add('hidden');
+        document.getElementById('admin-panel').classList.remove('hidden');
+        renderAdminTable();
+      } else alert('ভুল পাসকোড!');
+    };
   </script>
 </body>
 </html>
