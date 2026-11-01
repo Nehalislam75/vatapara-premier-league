@@ -702,11 +702,21 @@
           <p class="font-mono font-bold text-emerald-400">${safe(p.id)}</p>
           <p class="text-[10px] text-slate-400">${safe(p.playerType)}</p>
         </td>
-        <td class="p-3">
-         <img src="${safe(p.photo || '')}"
-         alt="Player"
-         class="w-14 h-14 object-cover rounded-lg border border-slate-600">
-       </td>
+       <td class="p-3">
+          ${p.photo ? `
+          <div class="flex flex-col items-center gap-2">
+          <img src="${safe(p.photo)}"
+           alt="Player"
+           class="w-14 h-14 object-cover rounded-lg border border-slate-600">
+
+      <a href="${safe(p.photo)}"
+         download="VPL-${safe(p.fullname)}.jpg"
+         class="text-xs text-emerald-400 hover:text-emerald-300">
+         ⬇ Download
+      </a>
+    </div>
+  ` : '<span class="text-slate-500">No Photo</span>'}
+</td>
         <td class="p-3">
           <p class="font-bold text-white">${safe(p.fullname)}</p>
           <p class="text-[10px] text-slate-400">মোবাইল: ${safe(p.mobile)}</p>
