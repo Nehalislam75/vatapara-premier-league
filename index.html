@@ -192,7 +192,7 @@
         <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-id-card text-emerald-400"></i> আপনার নিবন্ধনের স্ট্যাটাস ও আইডি কার্ড</h3>
         <p class="text-xs text-slate-400">নিবন্ধনের সময় ব্যবহৃত ১১ ডিজিটের মোবাইল নম্বর দিয়ে আপনার আবেদন ও কার্ড যাচাই করুন।</p>
         <div class="flex gap-2">
-          <input type="tel" id="search-mobile" placeholder="VPL-2026-XXXXXXXXXXXXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
+          <input type="tel" id="search-mobile" placeholder="মোবাইল নম্বর অথবা Registration ID দিন" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500">
           <button onclick="checkStatus()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2.5 rounded-lg transition whitespace-nowrap">খুঁজুন</button>
         </div>
       </div>
@@ -529,7 +529,9 @@
           photo: player.photo,
           status: player.status
         });
-
+        batch.set(doc(db, "vpl_phone_lookup", player.mobile), {
+          registrationId: id
+        });
         await batch.commit();
 
         alert("আপনার নিবন্ধন সফলভাবে জমা হয়েছে!\nআপনার Registration ID: " + id);
@@ -551,49 +553,73 @@
       }
     };
 
-    window.checkStatus = async function() {
-      const id = $("search-mobile").value.trim();
+   window.checkStatus = async function() {
+  const search = bnToEn($("search-mobile").value).trim();
 
-      if (!id.startsWith("VPL-2026-")) {
-        alert("Registration ID লিখুন (যেমন VPL-2026-XXXXXXXXXXXXXXX)।");
+  if (!search) {
+    alert("মোবাইল নম্বর অথবা Registration ID লিখুন।");
+    return;
+  }
+
+  try {
+    let id = search;
+
+    // মোবাইল নম্বর দিয়ে Registration ID খোঁজা
+    if (/^01[3-9]\d{8}$/.test(search)) {
+      const lookup = await getDoc(
+        doc(db, "vpl_phone_lookup", search)
+      );
+
+      if (!lookup.exists()) {
+        alert("এই নম্বরে কোনো রেজিস্ট্রেশন পাওয়া যায়নি।");
+        $("status-result").classList.add("hidden");
         return;
       }
 
-      try {
-        const snap = await getDoc(doc(db, "vpl_public_status", id));
+      id = lookup.data().registrationId;
 
-        if (!snap.exists()) {
-          alert("এই Registration ID পাওয়া যায়নি।");
-          $("status-result").classList.add("hidden");
-          return;
-        }
+    } else if (!search.startsWith("VPL-2026-")) {
+      alert("সঠিক মোবাইল নম্বর অথবা Registration ID দিন।");
+      return;
+    }
 
-        const p = snap.data();
+    const snap = await getDoc(
+      doc(db, "vpl_public_status", id)
+    );
 
-        $("card-regid").textContent = p.id;
-        $("card-fullname").textContent = p.fullname;
-        $("card-jerseyname").textContent = p.jerseyname;
-        $("card-role").textContent = p.role;
-        $("card-jerseysize").textContent = p.jerseysize;
-        $("card-prevteam").textContent = p.prevteam;
-        $("card-photo").src = p.photo;
+    if (!snap.exists()) {
+      alert("রেজিস্ট্রেশন পাওয়া যায়নি।");
+      $("status-result").classList.add("hidden");
+      return;
+    }
 
-        const badge = $("card-status-badge");
-        badge.textContent = p.status === "অনুমোদিত"
-          ? "অনুমোদিত (Approved)"
-          : "পেন্ডিং (অপেক্ষমাণ)";
+    const p = snap.data();
 
-        badge.className = p.status === "অনুমোদিত"
-          ? "px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-          : "px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+    $("card-regid").textContent = p.id;
+    $("card-fullname").textContent = p.fullname;
+    $("card-jerseyname").textContent = p.jerseyname;
+    $("card-role").textContent = p.role;
+    $("card-jerseysize").textContent = p.jerseysize;
+    $("card-prevteam").textContent = p.prevteam;
+    $("card-photo").src = p.photo;
 
-        $("status-result").classList.remove("hidden");
+    const badge = $("card-status-badge");
 
-      } catch (err) {
-        console.error(err);
-        alert("স্ট্যাটাস দেখা যায়নি: " + err.message);
-      }
-    };
+    badge.textContent = p.status === "অনুমোদিত"
+      ? "অনুমোদিত (Approved)"
+      : "পেন্ডিং (অপেক্ষমাণ)";
+
+    badge.className = p.status === "অনুমোদিত"
+      ? "px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+      : "px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+
+    $("status-result").classList.remove("hidden");
+
+  } catch (err) {
+    console.error(err);
+    alert("স্ট্যাটাস দেখা যায়নি: " + err.message);
+  }
+};
 
     window.changeStatus = async function(id, newStatus) {
       try {
@@ -607,17 +633,27 @@
     };
 
     window.deletePlayer = async function(id) {
-      if (!confirm("আপনি কি নিশ্চিত যে এই আবেদনটি চিরতরে মুছে ফেলতে চান?")) return;
+  if (!confirm("আপনি কি নিশ্চিত যে এই খেলোয়াড়ের তথ্য মুছে ফেলতে চান?")) return;
 
-      try {
-        const batch = writeBatch(db);
-        batch.delete(doc(db, "vpl_registrations", id));
-        batch.delete(doc(db, "vpl_public_status", id));
-        await batch.commit();
-      } catch (err) {
-        alert("Delete করা যায়নি: " + err.message);
-      }
-    };
+  try {
+    const player = window.globalPlayers.find(p => p.id === id);
+
+    const batch = writeBatch(db);
+
+    batch.delete(doc(db, "vpl_registrations", id));
+    batch.delete(doc(db, "vpl_public_status", id));
+
+    if (player && player.mobile) {
+      batch.delete(doc(db, "vpl_phone_lookup", player.mobile));
+    }
+
+    await batch.commit();
+
+    alert("খেলোয়াড়ের তথ্য মুছে ফেলা হয়েছে!");
+  } catch (err) {
+    alert("Delete করা যায়নি: " + err.message);
+  }
+};
 
     window.renderAdminTable = function() {
       const tbody = $("admin-table-body");
