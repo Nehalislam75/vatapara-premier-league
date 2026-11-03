@@ -849,12 +849,80 @@
         </td>
       </tr>`).join("");
     };
+// LOAD LIVE PLAYERS FROM FIREBASE
+let livePlayersUnsubscribe = null;
 
+window.loadLivePlayers = function() {
+  if (livePlayersUnsubscribe) {
+    livePlayersUnsubscribe();
+  }
+
+  const list = $("live-players-list");
+  const count = $("live-player-count");
+
+  list.innerHTML = `
+    <p class="text-slate-400 text-sm">
+      খেলোয়াড়দের তথ্য লোড হচ্ছে...
+    </p>
+  `;
+
+  livePlayersUnsubscribe = onSnapshot(
+    collection(db, "vpl_public_players"),
+    snap => {
+      const players = snap.docs.map(d => d.data());
+
+      count.textContent = "মোট খেলোয়াড়: " + players.length;
+
+      if (players.length === 0) {
+        list.innerHTML = `
+          <p class="text-slate-400 text-sm">
+            এখনো কোনো খেলোয়াড় পাওয়া যায়নি।
+          </p>
+        `;
+        return;
+      }
+
+      list.innerHTML = players.map(player => `
+        <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 flex items-center gap-4">
+          <img
+            src="${safe(player.photo || '')}"
+            class="w-16 h-16 rounded-full object-cover bg-slate-800"
+            alt="Player Photo"
+          >
+          <div class="min-w-0">
+            <h4 class="text-white font-bold">
+              ${safe(player.fullname || '')}
+            </h4>
+            <p class="text-sm text-blue-400">
+              ${safe(player.role || 'অনির্ধারিত')}
+            </p>
+            <p class="text-xs text-emerald-400 mt-1">
+              ${safe(player.status || 'পেন্ডিং')}
+            </p>
+          </div>
+        </div>
+      `).join("");
+    },
+    err => {
+      console.error("Live Players Error:", err);
+      list.innerHTML = `
+        <p class="text-red-400 text-sm">
+          খেলোয়াড়দের তথ্য লোড হয়নি: ${safe(err.message)}
+        </p>
+      `;
+    }
+  );
+};
 window.switchTab = function(t) {
   ["register", "status", "admin", "players"].forEach(x =>
     $("tab-" + x).classList.add("hidden")
   );
+
   $("tab-" + t).classList.remove("hidden");
+
+  if (t === "players") {
+    window.loadLivePlayers();
+  }
 };
 
     window.switchAdminTab = function(t) {
