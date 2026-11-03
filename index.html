@@ -390,6 +390,25 @@
           </button>
         </div>
         </div>
+        <!-- OLD PLAYERS MIGRATION -->
+        <div class="bg-slate-900 p-4 rounded-xl border border-slate-700">
+          <h4 class="text-white font-bold">
+            <i class="fa-solid fa-users text-blue-400 mr-2"></i>
+            Live Players Migration
+          </h4>
+
+          <p class="text-xs text-slate-400 mt-2">
+            আগের Registered Players-দের Live Players তালিকায় যুক্ত করুন।
+          </p>
+
+          <button
+            type="button"
+            onclick="migrateOldPlayers()"
+            class="mt-4 bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-2.5 rounded-lg">
+            <i class="fa-solid fa-cloud-arrow-up mr-2"></i>
+            Import Old Players
+          </button>
+        </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm text-slate-300 mb-1">বিকাশ নম্বর</label>
@@ -975,6 +994,49 @@ window.toggleRegistration = async function() {
     alert("পরিবর্তন করা যায়নি: " + err.message);
   } finally {
     btn.disabled = false;
+  }
+};
+// ONE-TIME MIGRATION: OLD PLAYERS TO PUBLIC PLAYERS
+window.migrateOldPlayers = async function() {
+  if (!confirm("পুরোনো সব খেলোয়াড় Live Players-এ যুক্ত করবেন?")) {
+    return;
+  }
+
+  try {
+    const players = window.globalPlayers || [];
+
+    if (players.length === 0) {
+      alert("কোনো খেলোয়াড় পাওয়া যায়নি!");
+      return;
+    }
+
+    const batch = writeBatch(db);
+    let count = 0;
+
+    players.forEach(player => {
+      if (!player.id || !player.fullname) return;
+
+      batch.set(
+        doc(db, "vpl_public_players", player.id),
+        {
+          id: player.id,
+          fullname: player.fullname,
+          role: player.role || "অনির্ধারিত",
+          photo: player.photo || "",
+          status: player.status || "পেন্ডিং"
+        }
+      );
+
+      count++;
+    });
+
+    await batch.commit();
+
+    alert(count + " জন পুরোনো খেলোয়াড় Live Players-এ যুক্ত হয়েছে!");
+
+  } catch (err) {
+    console.error(err);
+    alert("Migration ব্যর্থ হয়েছে: " + err.message);
   }
 };
     onAuthStateChanged(auth, user => {
