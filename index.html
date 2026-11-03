@@ -32,6 +32,8 @@
       <div class="flex items-center space-x-2 md:space-x-4">
         <button onclick="switchTab('register')" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white transition">নিবন্ধন</button>
         <button onclick="switchTab('status')" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-700 hover:bg-slate-600 text-slate-200 transition">স্ট্যাটাস ও কার্ড</button>
+        <button onclick="switchTab('players')" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-500 text-white transition">
+         <i class="fa-solid fa-users mr-1"></i> Live Players </button>
         <button onclick="switchTab('admin')" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 border border-slate-600 hover:bg-slate-700 text-slate-300 transition">এডমিন</button>
       </div>
     </div>
@@ -66,6 +68,41 @@
   </div>
 
   <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full">
+    <!-- LIVE PLAYERS SECTION -->
+<div id="tab-players" class="hidden space-y-6">
+
+  <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <h3 class="text-xl font-bold text-white">
+          <i class="fa-solid fa-users text-emerald-400"></i>
+          Live Registered Players
+        </h3>
+        <p class="text-xs text-slate-400 mt-1">
+          VPL 2026 Registered Players
+        </p>
+      </div>
+
+      <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-bold">
+        ● LIVE
+      </span>
+    </div>
+
+    <div id="live-player-count" class="text-sm text-emerald-400 mb-4">
+      মোট খেলোয়াড়: 0
+    </div>
+
+    <div id="live-players-list"
+         class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      <p class="text-slate-400 text-sm">
+        খেলোয়াড়দের তথ্য লোড হচ্ছে...
+      </p>
+
+    </div>
+  </div>
+
+</div>
     <div id="tab-register" class="space-y-6">
       <div class="bg-slate-800 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-xl">
         <div class="border-b border-slate-700 pb-4 mb-6">
@@ -583,6 +620,14 @@
           photo: player.photo,
           status: player.status
         });
+        // Public Live Players Data
+          batch.set(doc(db, "vpl_public_players", id), {
+            id: id,
+            fullname: player.fullname,
+            role: player.role,
+            photo: player.photo,
+            status: player.status
+          });
         batch.set(doc(db, "vpl_phone_lookup", player.mobile), {
           registrationId: id
         });
@@ -786,12 +831,12 @@
       </tr>`).join("");
     };
 
-    window.switchTab = function(t) {
-      ["register", "status", "admin"].forEach(x =>
-        $("tab-" + x).classList.add("hidden")
-      );
-      $("tab-" + t).classList.remove("hidden");
-    };
+window.switchTab = function(t) {
+  ["register", "status", "admin", "players"].forEach(x =>
+    $("tab-" + x).classList.add("hidden")
+  );
+  $("tab-" + t).classList.remove("hidden");
+};
 
     window.switchAdminTab = function(t) {
       ["players", "settings"].forEach(x =>
