@@ -331,6 +331,28 @@
 
         <div id="adm-sec-settings" class="hidden bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
           <h3 class="text-lg font-bold text-white">টুর্নামেন্ট সেটিংস</h3>
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-700">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h4 class="text-white font-bold">Player Registration Control</h4>
+            <p class="text-xs text-slate-400 mt-1">
+              নতুন খেলোয়াড়দের নিবন্ধন চালু বা বন্ধ করুন।
+            </p>
+            <p id="registration-control-status"
+              class="text-sm font-bold text-amber-400 mt-2">
+              Status Loading...
+            </p>
+          </div>
+
+          <button
+            type="button"
+            id="registration-toggle"
+            onclick="toggleRegistration()"
+            class="px-5 py-2 rounded-lg bg-emerald-600 text-white font-bold">
+            Loading...
+          </button>
+        </div>
+        </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm text-slate-300 mb-1">বিকাশ নম্বর</label>
@@ -504,6 +526,20 @@
       btn.textContent = "জমা হচ্ছে...";
 
       try {
+        // Check Registration ON/OFF Status
+        const registrationControl = await getDoc(
+          doc(db, "vpl_system", "registration")
+        );
+
+        if (
+          registrationControl.exists() &&
+          registrationControl.data().isOpen === false
+        ) {
+          alert("দুঃখিত! বর্তমানে প্লেয়ার রেজিস্ট্রেশন বন্ধ রয়েছে।");
+          btn.disabled = false;
+          btn.textContent = "নিবন্ধন সম্পন্ন করুন";
+          return;
+        }
         const playerType = $("p-playertype").value;
         const feeAmount = playerType === "নতুন প্লেয়ার"
           ? window.globalConfig.feeNew
@@ -834,7 +870,68 @@
         alert(err.message);
       }
     };
+    // Registration ON/OFF Control
+window.loadRegistrationControl = async function() {
+  try {
+    const snap = await getDoc(doc(db, "vpl_system", "registration"));
 
+    const isOpen = snap.exists()
+      ? snap.data().isOpen !== false
+      : true;
+
+    const btn = $("registration-toggle");
+    const status = $("registration-control-status");
+
+    btn.textContent = isOpen ? "বন্ধ করুন" : "চালু করুন";
+
+    btn.className = isOpen
+      ? "px-5 py-2 rounded-lg bg-red-600 text-white font-bold"
+      : "px-5 py-2 rounded-lg bg-emerald-600 text-white font-bold";
+
+    status.textContent = isOpen
+      ? "Registration বর্তমানে চালু আছে"
+      : "Registration বর্তমানে বন্ধ আছে";
+
+    status.className = isOpen
+      ? "text-sm font-bold text-emerald-400 mt-2"
+      : "text-sm font-bold text-red-400 mt-2";
+
+  } catch (err) {
+    console.error("Registration control error:", err);
+    alert("Registration Status Load হয়নি: " + err.message);
+  }
+};
+
+window.toggleRegistration = async function() {
+  const btn = $("registration-toggle");
+
+  btn.disabled = true;
+
+  try {
+    const ref = doc(db, "vpl_system", "registration");
+    const snap = await getDoc(ref);
+
+    const currentStatus = snap.exists()
+      ? snap.data().isOpen !== false
+      : true;
+
+    await setDoc(ref, {
+      isOpen: !currentStatus
+    }, { merge: true });
+
+    await window.loadRegistrationControl();
+
+    alert(!currentStatus
+      ? "Registration চালু করা হয়েছে!"
+      : "Registration বন্ধ করা হয়েছে!");
+
+  } catch (err) {
+    console.error(err);
+    alert("পরিবর্তন করা যায়নি: " + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+};
     onAuthStateChanged(auth, user => {
       const allowed = !!user &&
         user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
@@ -843,7 +940,7 @@
         $("admin-login-box").classList.add("hidden");
         $("admin-panel").classList.remove("hidden");
         $("admin-auth-email").textContent = user.email;
-
+        loadRegistrationControl();
         if (adminUnsubscribe) adminUnsubscribe();
 
         adminUnsubscribe = onSnapshot(
